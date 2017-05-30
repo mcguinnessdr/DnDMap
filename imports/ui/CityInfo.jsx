@@ -7,7 +7,8 @@ export default class CityInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: PoIs.findOne({ _id: this.props.ID }).name
+            name: PoIs.findOne({ _id: this.props.ID }).name,
+            editingName: false
         }
     }
 
@@ -16,9 +17,13 @@ export default class CityInfo extends Component {
     }
 
     nameChanged(e) {
-        this.setState({name: e.target.value});
-        PoIs.update({_id: this.props.ID}, {$set:{name: e.target.value}})
-        this.props.onNameChanged(e.target.value);
+        this.setState({name: e.target.value});        
+    }
+
+    finishedChangingName() {
+        this.setState({editingName: false});
+        PoIs.update({_id: this.props.ID}, {$set:{name: this.state.name}})
+        this.props.onNameChanged(this.state.name);
     }
 
     render() {
@@ -42,13 +47,11 @@ export default class CityInfo extends Component {
                 right: 10
             }
         };
-        //return <h1>{this.props.ID}</h1>;
-        var city = PoIs.findOne({ _id: this.props.ID });
         return (
             <div ref="div" style={style.div}>
-                <h1 style={style.h1}>{city._id}</h1>
-                <input onBlur={this.nameChanged.bind(this)} value={this.props.name}/>
+                {this.state.editingName ? <input onChange={this.nameChanged.bind(this)} onBlur={this.finishedChangingName.bind(this)} value={this.state.name}/> : <h1 onClick={() => {this.setState({editingName: true});}}>{this.state.name}</h1>}
                 <button style={style.close} onClick={() => {this.props.onClose();}}>X</button>
+
             </div>
         );
     }
