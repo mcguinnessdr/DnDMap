@@ -32,7 +32,7 @@ export default class CityInfo extends Component {
         //return <h1>{this.props.ID}</h1>;
         var city = PoIs.findOne({ _id: this.props.ID });
         return (
-            <div onBlur={this.blurred.bind(this)} tabIndex="0" ref="div" style={style.div}>
+            <div ref="div" style={style.div}>
                 <h1 style={style.h1}>{city._id}</h1>
                 <input></input>
                 <button style={style.close} onClick={() => {this.props.onClose();}}>X</button>
