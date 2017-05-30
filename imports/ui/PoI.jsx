@@ -22,7 +22,6 @@ export default class PoI extends Component {
 	}
 
 	hideInfo() {
-		alert("setting info invisible");
 		this.setState({
 			infoVisible: false
 		});
@@ -37,8 +36,8 @@ export default class PoI extends Component {
 		};
 		return (
 			<div>
-		<button style={style} onClick={this.handleClick.bind(this)} onLostFocus={this.hideInfo.bind(this)}>city</button>
-		{this.state.infoVisible ? <CityInfo ID={this.props.ID}/> : null}
+		<button style={style} onClick={this.handleClick.bind(this)}>city</button>
+		{this.state.infoVisible ? <CityInfo ID={this.props.ID} onClose={this.hideInfo.bind(this)}/> : null}
 		</div>
 		);
 	}

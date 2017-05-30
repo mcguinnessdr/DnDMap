@@ -5,23 +5,38 @@ import {PoIs} from "../api/pois.js";
 
 export default class CityInfo extends Component {
     blurred() {
-        alert("lost focus");
-        this.props.onLostFocus();
+        this.props.onClose();
     }
 
     render() {
         var style = {
-            display: "block",
-            position: "absolute",
-            top: 100,
-            left: 100
+            h1: {
+
+            },
+            div: {
+                backgroundColor: "#FFFDFE",
+                display: "block",
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                zIndex: 100
+            },
+            close: {
+                position: "absolute",
+                top: 10,
+                right: 10
+            }
         };
         //return <h1>{this.props.ID}</h1>;
-        var city = PoIs.findOne({_id: this.props.ID});
+        var city = PoIs.findOne({ _id: this.props.ID });
         return (
-            <div onBlur={this.blurred.bind(this)} tabIndex="0" ref="div">
-        <h1 style={style}>{city._id}</h1>
-        </div>
+            <div onBlur={this.blurred.bind(this)} tabIndex="0" ref="div" style={style.div}>
+                <h1 style={style.h1}>{city._id}</h1>
+                <input></input>
+                <button style={style.close} onClick={() => {this.props.onClose();}}>X</button>
+            </div>
         );
     }
 
@@ -32,5 +47,5 @@ export default class CityInfo extends Component {
 
 CityInfo.propTypes = { 
     ID: PropTypes.string.isRequired,
-    onLostFocus: PropTypes.func.isRequired
+    onClose: PropTypes.func.isRequired
 };
