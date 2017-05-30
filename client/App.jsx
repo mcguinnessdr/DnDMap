@@ -3,6 +3,7 @@ import {createContainer} from 'meteor/react-meteor-data';
 import {PoIs} from "../imports/api/pois.js";
 import PoI from "../imports/ui/PoI.jsx";
 import Controls from "../imports/ui/Controls.jsx";
+import AccountsUIWrapper from "../imports/ui/AccountsUIWrapper.jsx";
 
 var mapImg = '../images/Map.png';
 
@@ -49,9 +50,10 @@ class App extends Component {
 			  width: "100%"
 		  };
  		return (
-			<div>
+			<div style={{width: "100%"}}>
 				<Controls />
 				<input onBlur={this.mapSourceChanged.bind(this)} />
+				<div style={{position: "relative", float: "left"}}><AccountsUIWrapper /></div>
 				<img src={mapImg} className="map" alt="map" style={style} onClick={this.handleClick.bind(this)} ref="map"/>
 				{this.renderPoIs()}
 			</div>
