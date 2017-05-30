@@ -12,14 +12,16 @@ class App extends Component {
 		super(props);
 		this.state = {
 			mapWidth: 0,
-			mapHeight: 0
+			mapHeight: 0,
+			mapTop: 0,
+			mapLeft: 0
 		};
 	}
 
 	handleClick(e) {
 		PoIs.insert({
-			posX: e.pageX / this.state.mapWidth,
-			posY: e.pageY / this.state.mapHeight,
+			posX: (e.pageX - this.state.mapLeft) / this.state.mapWidth,
+			posY: (e.pageY - this.state.mapTop) / this.state.mapHeight,
 			name: "new city",
 			desc: "new description"
 		})
@@ -27,14 +29,14 @@ class App extends Component {
 
 	renderPoIs() {
 		return this.props.pois.map((poi) => (
-			<PoI posX={poi.posX  * this.state.mapWidth} posY={poi.posY * this.state.mapHeight} ID={poi._id}/>
+			<PoI posX={poi.posX  * this.state.mapWidth + this.state.mapLeft} posY={poi.posY * this.state.mapHeight + this.state.mapTop} ID={poi._id}/>
 			));
 	}
 
  	render() {
- 		var style = {
-			width:"100%"
-		};
+		  var style = {
+			  width: "100%"
+		  };
 
  		return (
 			<div>
@@ -59,7 +61,9 @@ class App extends Component {
 
 		 this.setState({ 
 			 mapWidth: this.refs.map.clientWidth,
-			 mapHeight: this.refs.map.clientHeight
+			 mapHeight: this.refs.map.clientHeight,
+			 mapTop: this.refs.map.offsetTop,
+			 mapLeft: this.refs.map.offsetLeft
 		  });
 	 }
 }
