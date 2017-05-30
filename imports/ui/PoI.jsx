@@ -1,11 +1,12 @@
 import React, { Component, PropTypes } from 'react';
+import {PoIs} from "../api/pois.js";
 import CityInfo from "./CityInfo.jsx";
 
 export default class PoI extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			infoVisible: false
+			infoVisible: true
 		};
 	}
 
@@ -36,7 +37,7 @@ export default class PoI extends Component {
 		};
 		return (
 			<div>
-		<button style={style} onClick={this.handleClick.bind(this)}>city</button>
+		<button style={style} onClick={this.handleClick.bind(this)}>{PoIs.findOne({ _id: this.props.ID }).name}</button>
 		{this.state.infoVisible ? <CityInfo ID={this.props.ID} onClose={this.hideInfo.bind(this)}/> : null}
 		</div>
 		);

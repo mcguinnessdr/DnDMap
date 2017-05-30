@@ -4,8 +4,20 @@ import {Mongo} from 'meteor/mongo';
 import {PoIs} from "../api/pois.js";
 
 export default class CityInfo extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            name: PoIs.findOne({ _id: this.props.ID }).name
+        }
+    }
+
     blurred() {
         this.props.onClose();
+    }
+
+    nameChanged(e) {
+        this.setState({name: e.target.value});
+        PoIs.update({_id: this.props.ID}, {$set:{name: e.target.value}})
     }
 
     render() {
@@ -34,7 +46,7 @@ export default class CityInfo extends Component {
         return (
             <div ref="div" style={style.div}>
                 <h1 style={style.h1}>{city._id}</h1>
-                <input></input>
+                <input onChange={this.nameChanged.bind(this)}>{this.state.name}</input>
                 <button style={style.close} onClick={() => {this.props.onClose();}}>X</button>
             </div>
         );
