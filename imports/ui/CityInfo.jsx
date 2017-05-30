@@ -6,9 +6,12 @@ import {PoIs} from "../api/pois.js";
 export default class CityInfo extends Component {
     constructor(props) {
         super(props);
+        var city = PoIs.findOne({ _id: this.props.ID });
         this.state = {
-            name: PoIs.findOne({ _id: this.props.ID }).name,
-            editingName: false
+            name: city.name,
+            desc: city.desc,
+            editingName: false,
+            editingDesc: false
         }
     }
 
@@ -24,6 +27,15 @@ export default class CityInfo extends Component {
         this.setState({editingName: false});
         PoIs.update({_id: this.props.ID}, {$set:{name: this.state.name}})
         this.props.onNameChanged(this.state.name);
+    }
+        
+    finishedChangingDescription() {
+        this.setState({editingDesc: false});
+        PoIs.update({_id: this.props.ID}, {$set:{desc: this.state.desc}})
+    }
+
+    descChanged(e) {
+        this.setState({desc: e.target.value});
     }
 
     render() {
@@ -51,7 +63,7 @@ export default class CityInfo extends Component {
             <div ref="div" style={style.div}>
                 {this.state.editingName ? <input onChange={this.nameChanged.bind(this)} onBlur={this.finishedChangingName.bind(this)} value={this.state.name}/> : <h1 onClick={() => {this.setState({editingName: true});}}>{this.state.name}</h1>}
                 <button style={style.close} onClick={() => {this.props.onClose();}}>X</button>
-
+                {this.state.editingDesc ? <textarea onChange={this.descChanged.bind(this)} onBlur={this.finishedChangingDescription.bind(this)} value={this.state.desc} /> : <p onClick={() => {this.setState({editingDesc: true});}}>{this.state.desc}</p>}
             </div>
         );
     }

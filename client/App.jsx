@@ -20,7 +20,8 @@ class App extends Component {
 		PoIs.insert({
 			posX: e.pageX / this.state.mapWidth,
 			posY: e.pageY / this.state.mapHeight,
-			name: "new city"
+			name: "new city",
+			desc: "new description"
 		})
 	}
 
