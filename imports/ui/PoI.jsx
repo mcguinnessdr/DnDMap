@@ -6,7 +6,8 @@ export default class PoI extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			infoVisible: true
+			infoVisible: false,
+			name: PoIs.findOne({ _id: this.props.ID }).name
 		};
 	}
 
@@ -28,6 +29,12 @@ export default class PoI extends Component {
 		});
 	}
 
+	changeName(newName) {
+				this.setState({
+			name: newName
+		});
+	}
+
 	render ()
 	{
 		var style = {
@@ -37,8 +44,8 @@ export default class PoI extends Component {
 		};
 		return (
 			<div>
-		<button style={style} onClick={this.handleClick.bind(this)}>{PoIs.findOne({ _id: this.props.ID }).name}</button>
-		{this.state.infoVisible ? <CityInfo ID={this.props.ID} onClose={this.hideInfo.bind(this)}/> : null}
+		<button style={style} onClick={this.handleClick.bind(this)}>{this.state.name}</button>
+		{this.state.infoVisible ? <CityInfo ID={this.props.ID} onClose={this.hideInfo.bind(this)} onNameChanged={this.changeName.bind(this)}/> : null}
 		</div>
 		);
 	}

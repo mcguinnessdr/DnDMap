@@ -18,6 +18,7 @@ export default class CityInfo extends Component {
     nameChanged(e) {
         this.setState({name: e.target.value});
         PoIs.update({_id: this.props.ID}, {$set:{name: e.target.value}})
+        this.props.onNameChanged(e.target.value);
     }
 
     render() {
@@ -46,7 +47,7 @@ export default class CityInfo extends Component {
         return (
             <div ref="div" style={style.div}>
                 <h1 style={style.h1}>{city._id}</h1>
-                <input onChange={this.nameChanged.bind(this)}>{this.state.name}</input>
+                <input onBlur={this.nameChanged.bind(this)} value={this.props.name}/>
                 <button style={style.close} onClick={() => {this.props.onClose();}}>X</button>
             </div>
         );
@@ -59,5 +60,6 @@ export default class CityInfo extends Component {
 
 CityInfo.propTypes = { 
     ID: PropTypes.string.isRequired,
-    onClose: PropTypes.func.isRequired
+    onClose: PropTypes.func.isRequired,
+    onNameChanged: PropTypes.func
 };

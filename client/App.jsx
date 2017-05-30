@@ -19,7 +19,8 @@ class App extends Component {
 	handleClick(e) {
 		PoIs.insert({
 			posX: e.pageX / this.state.mapWidth,
-			posY: e.pageY / this.state.mapHeight
+			posY: e.pageY / this.state.mapHeight,
+			name: "new city"
 		})
 	}
 
