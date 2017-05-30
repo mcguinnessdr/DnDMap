@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import {Mongo} from 'meteor/mongo';
+import ReactMarkdown from 'react-markdown';
 import {PoIs} from "../api/pois.js";
 
 export default class CityInfo extends Component {
@@ -63,7 +64,7 @@ export default class CityInfo extends Component {
             <div ref="div" style={style.div}>
                 {this.state.editingName ? <input onChange={this.nameChanged.bind(this)} onBlur={this.finishedChangingName.bind(this)} value={this.state.name}/> : <h1 onClick={() => {this.setState({editingName: true});}}>{this.state.name}</h1>}
                 <button style={style.close} onClick={() => {this.props.onClose();}}>X</button>
-                {this.state.editingDesc ? <textarea onChange={this.descChanged.bind(this)} onBlur={this.finishedChangingDescription.bind(this)} value={this.state.desc} /> : <p onClick={() => {this.setState({editingDesc: true});}}>{this.state.desc}</p>}
+                {this.state.editingDesc ? <textarea onChange={this.descChanged.bind(this)} onBlur={this.finishedChangingDescription.bind(this)} value={this.state.desc} /> : <div onClick={() => {this.setState({editingDesc: true});}}><ReactMarkdown  source={this.state.desc}/></div>}
             </div>
         );
     }

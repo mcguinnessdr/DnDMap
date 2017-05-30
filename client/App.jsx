@@ -33,14 +33,25 @@ class App extends Component {
 			));
 	}
 
+	setMap(source) {
+		mapImg = source;
+		this.forceUpdate();
+	}
+
+	mapSourceChanged(e) {
+		if(e.target.value != ""){
+			this.setMap(e.target.value);
+		}
+	}
+
  	render() {
 		  var style = {
 			  width: "100%"
 		  };
-
  		return (
 			<div>
 				<Controls />
+				<input onBlur={this.mapSourceChanged.bind(this)} />
 				<img src={mapImg} className="map" alt="map" style={style} onClick={this.handleClick.bind(this)} ref="map"/>
 				{this.renderPoIs()}
 			</div>
@@ -48,6 +59,7 @@ class App extends Component {
  	}
 
 	 componentDidMount() {
+			this.forceUpdate();
 		 window.addEventListener("resize", this.resize.bind(this));
 		 this.resize();
 		 //alert(this.state.mapWidth);
