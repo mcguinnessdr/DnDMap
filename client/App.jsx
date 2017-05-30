@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import {Meteor} from "meteor/meteor";
 import {createContainer} from 'meteor/react-meteor-data';
 import {PoIs} from "../imports/api/pois.js";
 import PoI from "../imports/ui/PoI.jsx";
@@ -21,6 +22,8 @@ class App extends Component {
 
 	handleClick(e) {
 		PoIs.insert({
+			owner: Meteor.userId(),
+			username: Meteor.user().username,
 			posX: (e.pageX - this.state.mapLeft) / this.state.mapWidth,
 			posY: (e.pageY - this.state.mapTop) / this.state.mapHeight,
 			name: "new city",
@@ -51,11 +54,19 @@ class App extends Component {
 		  };
  		return (
 			<div style={{width: "100%"}}>
-				<Controls />
-				<input onBlur={this.mapSourceChanged.bind(this)} />
-				<div style={{position: "relative", float: "left"}}><AccountsUIWrapper /></div>
-				<img src={mapImg} className="map" alt="map" style={style} onClick={this.handleClick.bind(this)} ref="map"/>
-				{this.renderPoIs()}
+					<div style={{ position: "relative", float: "left" }}><AccountsUIWrapper /></div>
+					{
+						this.props.currentUser ?
+							(
+								<div>
+									<Controls />
+									<input onBlur={this.mapSourceChanged.bind(this)} />
+									<img src={mapImg} className="map" alt="map" style={style} onClick={this.handleClick.bind(this)} ref="map" />
+									{this.renderPoIs()}
+								</div>
+							)
+							: ""
+					}
 			</div>
 		);
  	}
@@ -84,10 +95,12 @@ class App extends Component {
 
 App.propTypes = {
 	pois:  PropTypes.array.isRequired,
+	currentUser: PropTypes.object
 };
 
 export default createContainer(() => {
 	return {
 		pois: PoIs.find({}).fetch(),
+		currentUser: Meteor.user()
 	};
 }, App);
