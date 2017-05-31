@@ -21,14 +21,15 @@ class App extends Component {
 	}
 
 	handleClick(e) {
-		PoIs.insert({
-			owner: Meteor.userId(),
-			username: Meteor.user().username,
-			posX: (e.pageX - this.state.mapLeft) / this.state.mapWidth,
-			posY: (e.pageY - this.state.mapTop) / this.state.mapHeight,
-			name: "new city",
-			desc: "new description"
-		})
+		Meteor.call("pois.insert", (e.pageX - this.state.mapLeft) / this.state.mapWidth, (e.pageY - this.state.mapTop) / this.state.mapHeight)
+		// PoIs.insert({
+		// 	owner: Meteor.userId(),
+		// 	username: Meteor.user().username,
+		// 	posX: (e.pageX - this.state.mapLeft) / this.state.mapWidth,
+		// 	posY: (e.pageY - this.state.mapTop) / this.state.mapHeight,
+		// 	name: "new city",
+		// 	desc: "new description"
+		// })
 	}
 
 	renderPoIs() {

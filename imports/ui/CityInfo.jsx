@@ -26,13 +26,15 @@ export default class CityInfo extends Component {
 
     finishedChangingName() {
         this.setState({editingName: false});
-        PoIs.update({_id: this.props.ID}, {$set:{name: this.state.name}})
+        Meteor.call("pois.updateName", this.props.ID, this.state.name);
+        // PoIs.update({_id: this.props.ID}, {$set:{name: this.state.name}})
         this.props.onNameChanged(this.state.name);
     }
         
     finishedChangingDescription() {
         this.setState({editingDesc: false});
-        PoIs.update({_id: this.props.ID}, {$set:{desc: this.state.desc}})
+        Meteor.call("pois.updateDesc", this.props.ID, this.state.desc);
+        // PoIs.update({_id: this.props.ID}, {$set:{desc: this.state.desc}});
     }
 
     descChanged(e) {
