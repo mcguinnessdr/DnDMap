@@ -66,7 +66,7 @@ export default class CityInfo extends Component {
             <div ref="div" style={style.div}>
                 {this.state.editingName ? <input onChange={this.nameChanged.bind(this)} onBlur={this.finishedChangingName.bind(this)} value={this.state.name}/> : <h1 onClick={() => {this.setState({editingName: true});}}>{this.state.name}</h1>}
                 <button style={style.close} onClick={() => {this.props.onClose();}}>X</button>
-                {this.state.editingDesc ? <textarea onChange={this.descChanged.bind(this)} onBlur={this.finishedChangingDescription.bind(this)} value={this.state.desc} /> : <div onClick={() => {this.setState({editingDesc: true});}}><ReactMarkdown  source={this.state.desc}/></div>}
+                {this.state.editingDesc ? <textarea style={{width:"100%", height: "100%"}} onChange={this.descChanged.bind(this)} onBlur={this.finishedChangingDescription.bind(this)} value={this.state.desc} /> : <div onClick={() => {this.setState({editingDesc: true});}}><ReactMarkdown  source={this.state.desc}/></div>}
             </div>
         );
     }

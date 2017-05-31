@@ -40,8 +40,8 @@ class MapSelect extends Component {
 		return (
 			<span>
                 <button onClick={this.handleClick.bind(this)}>Add Map</button>
-                <input onChange={(e) => {this.setState({name: e.target.value})}}/>
-                <input onChange={(e) => {this.setState({source: e.target.value})}}/>
+                <input onChange={(e) => {this.setState({name: e.target.value})}} placeholder="Map name..."/>
+                <input onChange={(e) => {this.setState({source: e.target.value})}} placeholder="Image Location..."/>
                 <Select options={this.getMapOptions()} onChange={this.onMapSelected.bind(this)} />
 			</span>
 		);
