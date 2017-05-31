@@ -21,10 +21,6 @@ export default class CityInfo extends Component {
         this.props.onClose();
     }
 
-    nameChanged(e) {
-        this.setState({name: e.target.value});        
-    }
-
     finishedChangingName(contents) {
         this.setState({name: contents});
         Meteor.call("pois.updateName", this.props.ID, contents);
@@ -42,6 +38,11 @@ export default class CityInfo extends Component {
         this.setState({desc: e.target.value});
     }
 
+    removePoI() {
+        Meteor.call("pois.remove", this.props.ID);
+        this.props.onClose();
+    }
+
     render() {
         var style = {
             h1: {
@@ -49,19 +50,30 @@ export default class CityInfo extends Component {
                 width: "auto"
             },
             div: {
+                margin: "10%",
+                padding: 20,
+                border: "solid",
+                borderColor: "grey",
+                borderStyle: "thin",
                 backgroundColor: "#FFFDFE",
                 display: "block",
                 position: "absolute",
                 top: 0,
                 left: 0,
-                width: "100%",
-                height: "100%",
+                width: "80%",
+                height: "50%",
                 zIndex: 100
             },
             close: {
                 position: "absolute",
                 top: 10,
                 right: 10
+            },
+            delete: {
+                backgroundColor: "red", 
+                color: "white", 
+                position: "absolute",
+                bottom: "10px"
             }
         };
         return (
@@ -69,7 +81,8 @@ export default class CityInfo extends Component {
                 <EditableHeader onFinishedEditing={this.finishedChangingName.bind(this)} contents={this.state.name} />
                 {/*{this.state.editingName ? <input onChange={this.nameChanged.bind(this)} onBlur={this.finishedChangingName.bind(this)} value={this.state.name} ref="editName" onLoad={() => {alert(this);this.refs.editName.select()}}/> : <h1 onClick={() => {this.setState({editingName: true})}}>{this.state.name}</h1>}*/}
                 <button style={style.close} onClick={() => {this.props.onClose();}}>X</button>
-                {this.state.editingDesc ? <textarea style={{width:"100%", height: "100%"}} onChange={this.descChanged.bind(this)} onBlur={this.finishedChangingDescription.bind(this)} value={this.state.desc} /> : <div onClick={() => {this.setState({editingDesc: true});}}><ReactMarkdown  source={this.state.desc}/></div>}
+                {this.state.editingDesc ? <textarea style={{width:"100%", height: "80%"}} onChange={this.descChanged.bind(this)} onBlur={this.finishedChangingDescription.bind(this)} value={this.state.desc} /> : <div onClick={() => {this.setState({editingDesc: true});}}><ReactMarkdown  source={this.state.desc}/></div>}
+                <button onClick={this.removePoI.bind(this)} style={style.delete}>DELETE</button>
             </div>
         );
     }

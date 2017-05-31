@@ -42,9 +42,12 @@ export default class PoI extends Component {
 			top: this.props.posY,
 			left: this.props.posX
 		};
+
+		var poi = PoIs.findOne({ _id: this.props.ID });
+
 		return (
 			<div>
-		<button style={style} onClick={this.handleClick.bind(this)}>{this.state.name}</button>
+		<button style={style} onClick={this.handleClick.bind(this)}>{poi ? poi.name : this.state.name}</button>
 		{this.state.infoVisible ? <CityInfo ID={this.props.ID} onClose={this.hideInfo.bind(this)} onNameChanged={this.changeName.bind(this)}/> : null}
 		</div>
 		);
