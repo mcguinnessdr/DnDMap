@@ -13,6 +13,7 @@ class MarkerMap extends Component {
 			mapTop: 0,
 			mapLeft: 0
 		};
+
 	}
 
 	handleClick(e) {
@@ -29,7 +30,7 @@ class MarkerMap extends Component {
 
 	renderPoIs() {
 		return this.props.pois.map((poi) => (
-			<PoI posX={poi.posX  * this.state.mapWidth + this.state.mapLeft} posY={poi.posY * this.state.mapHeight + this.state.mapTop} ID={poi._id}/>
+			poi.mapId === this.props.mapId ? <PoI posX={poi.posX  * this.state.mapWidth + this.state.mapLeft} posY={poi.posY * this.state.mapHeight + this.state.mapTop} ID={poi._id}/> : null
 			));
 	}
 
@@ -40,7 +41,7 @@ class MarkerMap extends Component {
 		  };
 		  return (
 			  <div>
-				  <img src={"../images/Map.png"} className="map" alt="map" style={style} onClick={this.handleClick.bind(this)} ref="map" />
+				  <img src={this.props.mapId ? Maps.findOne(this.props.mapId).url : "../images/Map.png"} className="map" alt="map" style={style} onClick={this.handleClick.bind(this)} ref="map" />
 				  {this.renderPoIs()}
 			  </div>
 		  );
@@ -70,7 +71,7 @@ class MarkerMap extends Component {
 
 
 MarkerMap.propTypes = {
-    mapId: PropTypes.number.isRequired,
+    mapId: PropTypes.string.isRequired,
 	pois:  PropTypes.array.isRequired,
 	currentUser: PropTypes.object
 };
@@ -81,6 +82,5 @@ export default createContainer(() => {
 	return {
 		pois: PoIs.find({}).fetch(),
 		currentUser: Meteor.user(),
-		MapId: 0
 	};
 }, MarkerMap);

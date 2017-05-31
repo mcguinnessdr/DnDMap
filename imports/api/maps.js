@@ -12,14 +12,14 @@ if(Meteor.isServer){
 }
 
 Meteor.methods({
-    "maps.insert"(mapId, url) {
+    "maps.insert"(name, url) {
         if(!Meteor.userId()){
             throw new Meteor.Error("not logged in");
         }
         Maps.insert({
             owner: Meteor.userId(),
 			username: Meteor.user().username,
-            mapId: mapId,
+            name: name,
             url: url
         })
     },

@@ -11,6 +11,7 @@
     "react": "^15.5.4",
     "react-addons-pure-render-mixin": "^15.5.2",
     "react-dom": "^15.5.4",
-    "react-markdown": "^2.5.0"
+    "react-markdown": "^2.5.0",
+    "react-select": "^1.0.0-rc.5"
   }
 }

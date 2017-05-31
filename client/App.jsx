@@ -4,11 +4,22 @@ import {createContainer} from 'meteor/react-meteor-data';
 import MarkerMap from "../imports/ui/MarkerMap.jsx";
 import Controls from "../imports/ui/Controls.jsx";
 import AccountsUIWrapper from "../imports/ui/AccountsUIWrapper.jsx";
+import MapSelect from "../imports/ui/MapSelect.jsx";
 
 var mapImg = '../images/Map.png';
 
 
 class App extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			mapId: ""
+		}
+	}
+
+	onMapSelected(mapId){
+		this.setState({mapId: mapId});
+	}
 
  	render() {
 		  var style = {
@@ -21,8 +32,8 @@ class App extends Component {
 						this.props.currentUser ?
 							(
 								<div ref="map">
-									<Controls />
-									<MarkerMap mapId={0}/>
+									<MapSelect MapSelected={this.onMapSelected.bind(this)} />
+									<MarkerMap mapId={this.state.mapId}/>
 									{/*<img src={mapImg} className="map" alt="map" style={style} onClick={this.handleClick.bind(this)} ref="map" />
 									{this.renderPoIs()}*/}
 								</div>
