@@ -1,6 +1,5 @@
 import {Mongo} from 'meteor/mongo';
 import {Meteor} from "meteor/meteor";
-import {check} from "meteor/check";
 
 export const PoIs = new Mongo.Collection("pois");
 
@@ -13,13 +12,14 @@ if(Meteor.isServer){
 }
 
 Meteor.methods({
-    "pois.insert"(posX, posY) {
+    "pois.insert"(posX, posY, mapId) {
         if(!Meteor.userId()){
             throw new Meteor.Error("not logged in");
         }
         PoIs.insert({
             owner: Meteor.userId(),
 			username: Meteor.user().username,
+            mapId: mapId,
 			posX: posX,
 			posY: posY,
 			name: "new city",
