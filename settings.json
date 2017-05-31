@@ -1,0 +1,7 @@
+{
+    "galaxy.meteor.com": {
+        "env": { 
+            "MONGO_URL": "mongodb://user:Thisisthedatabase1!@ds143767.mlab.com:43767/dndmap"
+        }
+    }
+}
