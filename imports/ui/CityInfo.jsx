@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import {Mongo} from 'meteor/mongo';
 import ReactMarkdown from 'react-markdown';
 import {PoIs} from "../api/pois.js";
+import EditableHeader from "./EditableHeader.jsx";
 
 export default class CityInfo extends Component {
     constructor(props) {
@@ -24,11 +25,11 @@ export default class CityInfo extends Component {
         this.setState({name: e.target.value});        
     }
 
-    finishedChangingName() {
-        this.setState({editingName: false});
-        Meteor.call("pois.updateName", this.props.ID, this.state.name);
+    finishedChangingName(contents) {
+        this.setState({name: contents});
+        Meteor.call("pois.updateName", this.props.ID, contents);
         // PoIs.update({_id: this.props.ID}, {$set:{name: this.state.name}})
-        this.props.onNameChanged(this.state.name);
+        this.props.onNameChanged(contents);
     }
         
     finishedChangingDescription() {
@@ -44,7 +45,8 @@ export default class CityInfo extends Component {
     render() {
         var style = {
             h1: {
-
+                display: "inline-block",
+                width: "auto"
             },
             div: {
                 backgroundColor: "#FFFDFE",
@@ -64,7 +66,8 @@ export default class CityInfo extends Component {
         };
         return (
             <div ref="div" style={style.div}>
-                {this.state.editingName ? <input onChange={this.nameChanged.bind(this)} onBlur={this.finishedChangingName.bind(this)} value={this.state.name}/> : <h1 onClick={() => {this.setState({editingName: true});}}>{this.state.name}</h1>}
+                <EditableHeader onFinishedEditing={this.finishedChangingName.bind(this)} contents={this.state.name} />
+                {/*{this.state.editingName ? <input onChange={this.nameChanged.bind(this)} onBlur={this.finishedChangingName.bind(this)} value={this.state.name} ref="editName" onLoad={() => {alert(this);this.refs.editName.select()}}/> : <h1 onClick={() => {this.setState({editingName: true})}}>{this.state.name}</h1>}*/}
                 <button style={style.close} onClick={() => {this.props.onClose();}}>X</button>
                 {this.state.editingDesc ? <textarea style={{width:"100%", height: "100%"}} onChange={this.descChanged.bind(this)} onBlur={this.finishedChangingDescription.bind(this)} value={this.state.desc} /> : <div onClick={() => {this.setState({editingDesc: true});}}><ReactMarkdown  source={this.state.desc}/></div>}
             </div>
