@@ -100,6 +100,8 @@ App.propTypes = {
 };
 
 export default createContainer(() => {
+	Meteor.subscribe("pois");
+
 	return {
 		pois: PoIs.find({}).fetch(),
 		currentUser: Meteor.user()

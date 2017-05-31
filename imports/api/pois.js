@@ -4,6 +4,14 @@ import {check} from "meteor/check";
 
 export const PoIs = new Mongo.Collection("pois");
 
+if(Meteor.isServer){
+    Meteor.publish("pois", function poisPublication() {
+        return PoIs.find({
+            owner: this.userId
+        });
+    });
+}
+
 Meteor.methods({
     "pois.insert"(posX, posY) {
         if(!Meteor.userId()){
