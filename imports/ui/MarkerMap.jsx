@@ -41,15 +41,15 @@ class MarkerMap extends Component {
 		  };
 		  return (
 			  <div>
-				  <img src={this.props.mapId ? Maps.findOne(this.props.mapId).url : "../images/Map.png"} className="map" alt="map" style={style} onClick={this.handleClick.bind(this)} ref="map" />
+				  <img src={this.props.mapId ? Maps.findOne(this.props.mapId).url : "../images/Map.png"} className="map" alt="map" style={style} onClick={this.handleClick.bind(this)} ref="map" onLoad={this.handleLoaded.bind(this)} />
 				  {this.renderPoIs()}
 			  </div>
 		  );
 	}
 	
 	 componentDidMount() {
-			this.forceUpdate();
 		 window.addEventListener("resize", this.resize.bind(this));
+		// this.forceUpdate();
 		 this.resize();
 		 //alert(this.state.mapWidth);
 	 }
@@ -58,8 +58,17 @@ class MarkerMap extends Component {
 		 window.removeEventListener("resize", this.resize.bind(this));		 
 	 }
 
-	 resize() {
+	 componentDidUpdate() {
+		//  this.resize();
+	 }
 
+	 handleLoaded(){
+		 this.resize();
+	 }
+
+	 resize() {
+		// alert(this.refs.map.clientWidth);
+		// alert(this.refs.map.clientHeight);
 		 this.setState({ 
 			 mapWidth: this.refs.map.clientWidth,
 			 mapHeight: this.refs.map.clientHeight,
