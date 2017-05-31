@@ -20,10 +20,17 @@ Meteor.methods({
             owner: Meteor.userId(),
 			username: Meteor.user().username,
             name: name,
-            url: url
+            url: url,
+            desc: ""
         })
     },
     "maps.remove"(id) {
         Maps.remove(id);
+    },
+    "maps.updateName"(id, newName) {
+        Maps.update(id, {$set:{name: newName}});
+    },
+    "maps.updateDesc"(id, newDesc) {
+        Maps.update(id, {$set:{desc: newDesc}});
     }
 });
