@@ -28,18 +28,27 @@ class MapSelect extends Component {
     }
 
     getMapOptions() {
-        return this.props.maps.map((map) => (
+        var options = this.props.maps.map((map) => (
             {
                 value: map._id,
                 label: map.name
             }));
+            options.push({
+                value: 0,
+                label: "Add map..."
+            });
+            return options;
     }
 
     onMapSelected(value) {
-        this.setState({selected: value.value});
-        this.props.MapSelected(value.value);
-        if(Maps.findOne(value.value).desc === undefined){
-            Meteor.call("maps.updateDesc", value.value, "new description");
+        if(value.value !== 0){
+            this.setState({ selected: value.value });
+            this.props.MapSelected(value.value);
+            if (Maps.findOne(value.value).desc === undefined) {
+                Meteor.call("maps.updateDesc", value.value, "new description");
+            }
+        }else {
+            this.addMap("new map", "");
         }
     }
 
@@ -55,9 +64,9 @@ class MapSelect extends Component {
 	{
 		return (
 			<span>
-                <button onClick={this.handleClick.bind(this)}>Add Map</button>
+                {/*<button onClick={this.handleClick.bind(this)}>Add Map</button>
                 <input onChange={(e) => {this.setState({name: e.target.value})}} placeholder="Map name..."/>
-                <input onChange={(e) => {this.setState({source: e.target.value})}} placeholder="Image Location..."/>
+                <input onChange={(e) => {this.setState({source: e.target.value})}} placeholder="Image Location..."/>*/}
                 <button onClick={this.editMap.bind(this)}>Edit map</button>
                 <Select options={this.getMapOptions()} onChange={this.onMapSelected.bind(this)} value={this.state.selected} />
                 {this.state.infoVisible ? <MapInfo ID={this.state.selected} onClose={this.mapInfoClosed.bind(this)} /> : null}
