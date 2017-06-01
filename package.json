@@ -10,6 +10,7 @@
     "meteor-node-stubs": "~0.2.4",
     "react": "^15.5.4",
     "react-addons-pure-render-mixin": "^15.5.2",
+    "react-contextmenu": "^2.6.1",
     "react-dom": "^15.5.4",
     "react-markdown": "^2.5.0",
     "react-select": "^1.0.0-rc.5"
