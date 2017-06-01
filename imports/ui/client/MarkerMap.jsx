@@ -15,7 +15,8 @@ class MarkerMap extends Component {
 			mapLeft: 0,
 			zoom: 1,
 			infoVisible: false,
-			mapUrl: ""
+			mapUrl: "",
+			zooming: false
 		};
 
 	}
@@ -57,10 +58,34 @@ class MarkerMap extends Component {
 		this.forceUpdate();
 	}
 
+	shiftPressed (pressed) {
+		this.setState({zooming: pressed});
+	}
+
+	keyDown(e) {
+		if(e.keyCode === 16){
+			this.shiftPressed(true);		
+		}
+	}
+
+	keyUp(e) {
+		if(e.keyCode === 16){
+			this.shiftPressed(false);		
+		}
+	}
+
+	handleScroll(e) {
+		if(this.state.zooming){
+			this.setState({zoom: Math.round((this.state.zoom + (e.deltaY * this.state.zoom * -.001)) * 100) / 100});
+		}
+	}
+
 	render ()
 	{
 		  var style = {
-			  map: {width: this.state.zoom * 100 + "%"},
+			  map: {
+				  width: this.state.zoom * 100 + "%",
+			},
 			  editButton: {
 				  border: "none",
 				  borderRadius: ".5em",
@@ -69,7 +94,7 @@ class MarkerMap extends Component {
 			  }
 		  };
 		  return (
-			  <div>
+			  <div style={{width: "100%", height: "100%"}}>
 				  <button onClick={this.editMap.bind(this)} style={style.editButton}>Edit map</button>
 				  <input value={this.state.zoom * 100} onChange={this.zoomChanged.bind(this)} placeholder="set zoom..." style={{position: "fixed", top: 0, right: 0}}/>
 				  <img src={this.state.url} className="map" alt="No maps or image URL is incorrect" style={style.map} onClick={this.handleClick.bind(this)} ref="map" onLoad={this.handleLoaded.bind(this)} />
@@ -81,6 +106,9 @@ class MarkerMap extends Component {
 	
 	 componentDidMount() {
 		 window.addEventListener("resize", this.resize.bind(this));
+		 window.addEventListener("keydown", this.keyDown.bind(this));
+		 window.addEventListener("keyup", this.keyUp.bind(this));
+		 window.addEventListener("wheel", this.handleScroll.bind(this));
 		// this.forceUpdate();
 		 this.resize();
 		 //alert(this.state.mapWidth);
@@ -93,7 +121,11 @@ class MarkerMap extends Component {
 	 }
 
 	 componentWillUnmount() {
-		 window.removeEventListener("resize", this.resize.bind(this));		 
+		 window.removeEventListener("resize", this.resize.bind(this));
+		 window.removeEventListener("keydown", this.keyDown.bind(this));
+		 window.removeEventListener("keyup", this.keyUp.bind(this));
+		 window.removeEventListener("wheel", this.handleScroll.bind(this));
+		 		 
 	 }
 
 	 handleLoaded(){
