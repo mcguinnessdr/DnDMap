@@ -60,7 +60,7 @@ class MarkerMap extends Component {
 	render ()
 	{
 		  var style = {
-			  div: {width: this.state.zoom * 100 + "%"},
+			  map: {width: this.state.zoom * 100 + "%"},
 			  editButton: {
 				  border: "none",
 				  borderRadius: ".5em",
@@ -72,7 +72,7 @@ class MarkerMap extends Component {
 			  <div>
 				  <button onClick={this.editMap.bind(this)} style={style.editButton}>Edit map</button>
 				  <input value={this.state.zoom * 100} onChange={this.zoomChanged.bind(this)} placeholder="set zoom..." style={{position: "fixed", top: 0, right: 0}}/>
-				  <img src={this.state.url} className="map" alt="No maps or image URL is incorrect" style={style} onClick={this.handleClick.bind(this)} ref="map" onLoad={this.handleLoaded.bind(this)} />
+				  <img src={this.state.url} className="map" alt="No maps or image URL is incorrect" style={style.map} onClick={this.handleClick.bind(this)} ref="map" onLoad={this.handleLoaded.bind(this)} />
 				  {this.renderPoIs()}
 				  {this.state.infoVisible ? <MapInfo ID={this.props.mapId} onClose={this.mapInfoClosed.bind(this)} urlUpdated={this.mapUrlUpdated.bind(this)} /> : null}
 			  </div>
