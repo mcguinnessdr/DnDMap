@@ -41,7 +41,7 @@ class MarkerMap extends Component {
 		  };
 		  return (
 			  <div>
-				  <img src={this.props.mapId ? Maps.findOne(this.props.mapId).url : "../images/Map.png"} className="map" alt="map" style={style} onClick={this.handleClick.bind(this)} ref="map" onLoad={this.handleLoaded.bind(this)} />
+				  <img src={this.props.mapId ? Maps.findOne(this.props.mapId).url : ""} className="map" alt="No maps or image URL is incorrect" style={style} onClick={this.handleClick.bind(this)} ref="map" onLoad={this.handleLoaded.bind(this)} />
 				  {this.renderPoIs()}
 			  </div>
 		  );
