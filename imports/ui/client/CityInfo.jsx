@@ -85,10 +85,10 @@ export default class CityInfo extends Component {
         };
         return (
             <div ref="div" style={style.div}>
-                <EditableHeader onFinishedEditing={this.finishedChangingName.bind(this)} contents={this.state.name} />
+                <EditableHeader onFinishedEditing={this.finishedChangingName.bind(this)} contents={this.state.name} placeholder="Enter place name..."/>
                 {/*{this.state.editingName ? <input onChange={this.nameChanged.bind(this)} onBlur={this.finishedChangingName.bind(this)} value={this.state.name} ref="editName" onLoad={() => {alert(this);this.refs.editName.select()}}/> : <h1 onClick={() => {this.setState({editingName: true})}}>{this.state.name}</h1>}*/}
                 <button style={style.close} onClick={() => {this.props.onClose();}}>x</button>
-                <EditableDescription onFinishedEditing={this.finishedChangingDescription.bind(this)} contents={this.state.desc} />
+                <EditableDescription onFinishedEditing={this.finishedChangingDescription.bind(this)} contents={this.state.desc} placeholder="Enter place description..." />
                 {/*{this.state.editingDesc ? <textarea style={{width:"100%", height: "80%"}} onChange={this.descChanged.bind(this)} onBlur={this.finishedChangingDescription.bind(this)} value={this.state.desc} /> : <div onClick={() => {this.setState({editingDesc: true});}}><ReactMarkdown  source={this.state.desc}/></div>}*/}
                 <button onClick={this.removePoI.bind(this)} style={style.delete}>DELETE</button>
             </div>

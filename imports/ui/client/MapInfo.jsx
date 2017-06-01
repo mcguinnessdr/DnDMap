@@ -92,10 +92,10 @@ export default class MapInfo extends Component {
         return (
             <div ref="div" style={style.div}>
                 <p>map info</p>
-                <EditableHeader onFinishedEditing={this.finishedChangingName.bind(this)} contents={this.state.name} />
+                <EditableHeader onFinishedEditing={this.finishedChangingName.bind(this)} contents={this.state.name} placeholder="Enter map name..." />
                 <button style={style.close} onClick={() => {this.props.onClose();}}>X</button>
                 <input value={this.state.URL} onBlur={this.finishedChangingUrl.bind(this)} onChange={this.urlChanged.bind(this)}/>
-                <EditableDescription onFinishedEditing={this.finishedChangingDescription.bind(this)} contents={this.state.desc} />
+                <EditableDescription onFinishedEditing={this.finishedChangingDescription.bind(this)} contents={this.state.desc} placeholder="Enter map description..." />
                 <button onClick={this.removeMap.bind(this)} style={style.delete}>DELETE</button>
             </div>
         );

@@ -21,11 +21,12 @@ export default class EditableH1 extends Component {
     }
 
     render() {
-        return this.state.editing ? <input onChange={this.contentsChanged.bind(this)} onBlur={this.finishedEditing.bind(this)} value={this.state.contents} ref="edit" /> : <h1 onClick={() => { this.setState({ editing: true }) }}>{this.state.contents}</h1>;
+        return this.state.editing ? <input onChange={this.contentsChanged.bind(this)} onBlur={this.finishedEditing.bind(this)} value={this.state.contents} ref="edit" /> : <h1 onClick={() => { this.setState({ editing: true }) }}>{this.state.contents !== "" ? this.state.contents : this.props.placeholder}</h1>;
     }
 }
 
 EditableH1.propTypes = {
     contents: PropTypes.string.isRequired,
-    onFinishedEditing: PropTypes.func.isRequired
+    onFinishedEditing: PropTypes.func.isRequired,
+    placeholder: PropTypes.string
 }

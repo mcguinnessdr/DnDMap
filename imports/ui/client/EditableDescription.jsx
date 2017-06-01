@@ -23,11 +23,12 @@ export default class EditableDescription extends Component {
     }
 
     render() {
-        return this.state.editing ? <textarea style={{width:"100%", height: "80%"}} onChange={this.contentsChanged.bind(this)} onBlur={this.finishedEditing.bind(this)} value={this.state.contents} ref="edit" /> : <div onClick={() => {this.setState({editing: true});}}><ReactMarkdown  source={this.state.contents}/></div>;
+        return this.state.editing ? <textarea style={{width:"100%", height: "80%"}} onChange={this.contentsChanged.bind(this)} onBlur={this.finishedEditing.bind(this)} value={this.state.contents} ref="edit" /> : <div onClick={() => {this.setState({editing: true});}}><ReactMarkdown  source={this.state.contents !== "" ? this.state.contents : this.props.placeholder}/></div>;
     }
 }
 
 EditableDescription.propTypes = {
     contents: PropTypes.string.isRequired,
-    onFinishedEditing: PropTypes.func.isRequired
+    onFinishedEditing: PropTypes.func.isRequired,
+    placeholder: PropTypes.string
 }
