@@ -3,6 +3,7 @@ import {createContainer} from 'meteor/react-meteor-data';
 import {PoIs} from "../../api/pois.js";
 import {Maps} from "../../api/maps.js";
 import PoI from "./PoI.jsx";
+import MapInfo from "./MapInfo.jsx";
 
 class MarkerMap extends Component {
 	constructor(props) {
@@ -12,7 +13,9 @@ class MarkerMap extends Component {
 			mapHeight: 0,
 			mapTop: 0,
 			mapLeft: 0,
-			zoom: 1
+			zoom: 1,
+			infoVisible: false,
+			mapUrl: ""
 		};
 
 	}
@@ -41,6 +44,19 @@ class MarkerMap extends Component {
 		});
 	}
 
+    editMap() {
+        this.setState({infoVisible: true});
+    }
+
+	mapInfoClosed() {
+        this.setState({infoVisible: false});
+    }
+
+	mapUrlUpdated(newUrl) {
+		this.setState({url: newUrl});
+		this.forceUpdate();
+	}
+
 	render ()
 	{
 		  var style = {
@@ -48,9 +64,11 @@ class MarkerMap extends Component {
 		  };
 		  return (
 			  <div>
+				  <button onClick={this.editMap.bind(this)}>Edit map</button>
 				  <input value={this.state.zoom * 100} onChange={this.zoomChanged.bind(this)} placeholder="set zoom..." style={{position: "fixed", top: 0, right: 0}}/>
-				  <img src={this.props.mapId ? Maps.findOne(this.props.mapId).url : ""} className="map" alt="No maps or image URL is incorrect" style={style} onClick={this.handleClick.bind(this)} ref="map" onLoad={this.handleLoaded.bind(this)} />
+				  <img src={this.state.url} className="map" alt="No maps or image URL is incorrect" style={style} onClick={this.handleClick.bind(this)} ref="map" onLoad={this.handleLoaded.bind(this)} />
 				  {this.renderPoIs()}
+				  {this.state.infoVisible ? <MapInfo ID={this.props.mapId} onClose={this.mapInfoClosed.bind(this)} urlUpdated={this.mapUrlUpdated.bind(this)} /> : null}
 			  </div>
 		  );
 	}
@@ -60,6 +78,12 @@ class MarkerMap extends Component {
 		// this.forceUpdate();
 		 this.resize();
 		 //alert(this.state.mapWidth);
+	 }
+
+	 componentWillReceiveProps(nextProps) {
+		if(nextProps.mapId !== "") {
+			this.setState({url: Maps.findOne(nextProps.mapId).url})
+		}
 	 }
 
 	 componentWillUnmount() {

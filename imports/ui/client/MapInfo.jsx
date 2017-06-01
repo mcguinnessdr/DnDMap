@@ -37,7 +37,10 @@ export default class MapInfo extends Component {
     }
 
     urlChanged (e) {
-        this.setState({URL: e.target.value});        
+        this.setState({URL: e.target.value});  
+        if(this.props.urlUpdated !== undefined){
+            this.props.urlUpdated(e.target.value);
+        }      
     }
 
     descChanged(e) {
@@ -108,5 +111,6 @@ export default class MapInfo extends Component {
 
 MapInfo.propTypes = { 
     ID: PropTypes.string.isRequired,
-    onClose: PropTypes.func.isRequired
+    onClose: PropTypes.func.isRequired,
+    urlUpdated: PropTypes.func
 };

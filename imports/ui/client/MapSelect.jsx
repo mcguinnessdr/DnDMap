@@ -5,7 +5,7 @@ import {Mongo} from 'meteor/mongo';
 import {Maps} from "../../api/maps.js";
 import Select from "react-select";
 import 'react-select/dist/react-select.css';
-import MapInfo from "./MapInfo.jsx";
+
 
 
 class MapSelect extends Component {
@@ -14,7 +14,6 @@ class MapSelect extends Component {
         this.state = {
             source: "",
             name: "",
-            infoVisible: false,
             selected: 0
         }
     }
@@ -52,13 +51,9 @@ class MapSelect extends Component {
         }
     }
 
-    editMap() {
-        this.setState({infoVisible: true});
-    }
 
-    mapInfoClosed() {
-        this.setState({infoVisible: false});
-    }
+
+
 
 	render ()
 	{
@@ -67,9 +62,8 @@ class MapSelect extends Component {
                 {/*<button onClick={this.handleClick.bind(this)}>Add Map</button>
                 <input onChange={(e) => {this.setState({name: e.target.value})}} placeholder="Map name..."/>
                 <input onChange={(e) => {this.setState({source: e.target.value})}} placeholder="Image Location..."/>*/}
-                <button onClick={this.editMap.bind(this)}>Edit map</button>
                 <Select options={this.getMapOptions()} onChange={this.onMapSelected.bind(this)} value={this.state.selected} />
-                {this.state.infoVisible ? <MapInfo ID={this.state.selected} onClose={this.mapInfoClosed.bind(this)} /> : null}
+
 			</span>
 		);
 	}
