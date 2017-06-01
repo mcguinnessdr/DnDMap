@@ -27,7 +27,7 @@ class App extends Component {
 		  };
  		return (
 			<div style={{width: "100%"}}>
-					<div style={{ position: "relative", float: "left" }}><AccountsUIWrapper /></div>
+					<div><AccountsUIWrapper /></div>
 					{
 						this.props.currentUser ?
 							(
