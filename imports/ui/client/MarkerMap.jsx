@@ -11,7 +11,8 @@ class MarkerMap extends Component {
 			mapWidth: 0,
 			mapHeight: 0,
 			mapTop: 0,
-			mapLeft: 0
+			mapLeft: 0,
+			zoom: 1
 		};
 
 	}
@@ -34,13 +35,20 @@ class MarkerMap extends Component {
 			));
 	}
 
+	zoomChanged(e) {
+		this.setState({
+			zoom: e.target.value / 100
+		});
+	}
+
 	render ()
 	{
 		  var style = {
-			  width: "100%"
+			  width: this.state.zoom * 100 + "%"
 		  };
 		  return (
 			  <div>
+				  <input value={this.state.zoom * 100} onChange={this.zoomChanged.bind(this)} placeholder="set zoom..." style={{position: "fixed", top: 0, right: 0}}/>
 				  <img src={this.props.mapId ? Maps.findOne(this.props.mapId).url : ""} className="map" alt="No maps or image URL is incorrect" style={style} onClick={this.handleClick.bind(this)} ref="map" onLoad={this.handleLoaded.bind(this)} />
 				  {this.renderPoIs()}
 			  </div>
@@ -58,12 +66,14 @@ class MarkerMap extends Component {
 		 window.removeEventListener("resize", this.resize.bind(this));		 
 	 }
 
-	 componentDidUpdate() {
-		//  this.resize();
-	 }
-
 	 handleLoaded(){
 		 this.resize();
+	 }
+
+	 componentDidUpdate(prevProps, prevState) {
+		if(this.refs.map.clientHeight !== this.state.mapHeight){
+			this.resize();
+		}
 	 }
 
 	 resize() {
@@ -82,7 +92,7 @@ class MarkerMap extends Component {
 MarkerMap.propTypes = {
     mapId: PropTypes.string.isRequired,
 	pois:  PropTypes.array.isRequired,
-	currentUser: PropTypes.object
+	currentUser: PropTypes.object,
 };
 
 export default createContainer(() => {
