@@ -18,7 +18,11 @@ class MarkerMap extends Component {
 			mapUrl: "",
 			zooming: false,
 			scrolledTop: 0,
-			scrolledLeft: 0
+			scrolledLeft: 0,
+			containerWidth: 0,
+			containerHeight: 0,
+			containerTop: 0,
+			containerLeft: 0,
 		};
 
 	}
@@ -85,8 +89,8 @@ class MarkerMap extends Component {
 	mouseMove(e) {
 		if(e.button === 1)
 		{
-			this.setState({scrolledTop: this.state.scrolledTop + e.movementY});
-			this.setState({scrolledLeft: this.state.scrolledLeft + e.movementX});
+			this.setState({scrolledTop: Math.min(Math.max(this.state.scrolledTop + e.movementY, this.state.containerHeight - this.state.mapHeight), 0 + this.state.containerTop)});
+			this.setState({scrolledLeft: Math.min(Math.max(this.state.scrolledLeft + e.movementX, this.state.containerWidth - this.state.mapWidth), 0)});
 			this.resize();
 		}
 	}
@@ -102,16 +106,19 @@ class MarkerMap extends Component {
 				  overflow: "hidden"
 			},
 			  editButton: {
+				  position: "relative",
 				  border: "none",
 				  borderRadius: ".5em",
 				  padding: ".125em .25em",
-				  whiteSpace: "nowrap"
+				  whiteSpace: "nowrap",
+				  zIndex: 1
 			  }
 		  };
 		  return (
 			  <div style={{width: "100%", height: "100%", overflow: "hidden"}}>
-				  <button onClick={this.editMap.bind(this)} style={style.editButton}>Edit map</button>
 				  <input value={this.state.zoom * 100} onChange={this.zoomChanged.bind(this)} placeholder="set zoom..." style={{position: "fixed", top: 0, right: 0}}/>
+				  <div><button onClick={this.editMap.bind(this)} style={style.editButton}>Edit map</button></div>
+				  <div ref="container" style={{height:"100%"}}>
 				  <img 
 				  src={this.state.url} 
 				  className="map" 
@@ -119,8 +126,9 @@ class MarkerMap extends Component {
 				  style={style.map} 
 				  ref="map" 
 				  onLoad={this.handleLoaded.bind(this)} 
-				   onClick={this.handleClick.bind(this)}
+				  onClick={this.handleClick.bind(this)}
 				  />
+				  </div>
 				  <div style={{position: "relative"}}>{this.renderPoIs()}</div>
 				  {this.state.infoVisible ? <MapInfo ID={this.props.mapId} onClose={this.mapInfoClosed.bind(this)} urlUpdated={this.mapUrlUpdated.bind(this)} /> : null}
 			  </div>
@@ -170,7 +178,11 @@ class MarkerMap extends Component {
 			 mapWidth: this.refs.map.clientWidth,
 			 mapHeight: this.refs.map.clientHeight,
 			 mapTop: this.refs.map.offsetTop,
-			 mapLeft: this.refs.map.offsetLeft
+			 mapLeft: this.refs.map.offsetLeft,			
+			 containerWidth: this.refs.container.clientWidth,
+			 containerHeight: this.refs.container.clientHeight,
+			 containerTop: this.refs.container.offsetTop,
+			 containerLeft: this.refs.container.offsetLeft
 		  });
 	 }
 }
