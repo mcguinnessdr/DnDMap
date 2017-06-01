@@ -59,11 +59,21 @@ class MapSelect extends Component {
                 <input onChange={(e) => {this.setState({name: e.target.value})}} placeholder="Map name..."/>
                 <input onChange={(e) => {this.setState({source: e.target.value})}} placeholder="Image Location..."/>
                 <button onClick={this.editMap.bind(this)}>Edit map</button>
-                <Select options={this.getMapOptions()} onChange={this.onMapSelected.bind(this)} />
+                <Select options={this.getMapOptions()} onChange={this.onMapSelected.bind(this)} value={this.state.selected} />
                 {this.state.infoVisible ? <MapInfo ID={this.state.selected} onClose={this.mapInfoClosed.bind(this)} /> : null}
 			</span>
 		);
 	}
+
+    componentWillReceiveProps (nextProps) {
+        if(this.props.maps[0] === undefined){
+            this.setState({selected: nextProps.maps[0]._id});
+            this.props.MapSelected(nextProps.maps[0]._id);
+            if (Maps.findOne(nextProps.maps[0]._id).desc === undefined) {
+                Meteor.call("maps.updateDesc", value.value, "new description");
+            }
+        }
+    }
 }
 
 MapSelect.propTypes = {
