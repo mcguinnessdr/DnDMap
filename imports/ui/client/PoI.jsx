@@ -41,10 +41,13 @@ export default class PoI extends Component {
 			position: 'absolute',
 			top: this.props.posY,
 			left: this.props.posX,
+			// background: "none",
+			// border: "none"
 			border: "solid",
 			borderWidth: "1px",
 			borderRadius: "0 .5em .5em .5em",
-			padding: ".125em .25em"
+			padding: ".125em .25em",
+			whiteSpace: "nowrap"
 		};
 
 		var poi = PoIs.findOne({ _id: this.props.ID });
