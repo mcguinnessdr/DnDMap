@@ -23,15 +23,23 @@ class App extends Component {
 
  	render() {
 		  var style = {
-			  width: "100%"
+			  width: "100%",
+			  height: "100%",
+			  overflow: "hidden"
+		  };
+		  var mapStyle = {
+			  width: "100%",
+			  height: "100%",
+			  position: "relative",
+			  overflow: "hidden"
 		  };
  		return (
-			<div style={{width: "100%"}}>
-					<div><AccountsUIWrapper /></div>
+			<div style={style}>
+					<div style={{background: "white"}}><AccountsUIWrapper /></div>
 					{
 						this.props.currentUser ?
 							(
-								<div ref="map">
+								<div ref="map" style={mapStyle}>
 									<MapSelect MapSelected={this.onMapSelected.bind(this)} />
 									<MarkerMap mapId={this.state.mapId}/>
 									{/*<img src={mapImg} className="map" alt="map" style={style} onClick={this.handleClick.bind(this)} ref="map" />

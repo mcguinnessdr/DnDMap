@@ -38,7 +38,7 @@ export default class PoI extends Component {
 	render ()
 	{
 		var style = {
-			position: 'absolute',
+			position: 'fixed',
 			top: this.props.posY,
 			left: this.props.posX,
 			// background: "none",
@@ -47,7 +47,7 @@ export default class PoI extends Component {
 			borderWidth: "1px",
 			borderRadius: "0 .5em .5em .5em",
 			padding: ".125em .25em",
-			whiteSpace: "nowrap"
+			whiteSpace: "nowrap",
 		};
 
 		var poi = PoIs.findOne({ _id: this.props.ID });

@@ -5,6 +5,10 @@
 	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
+html, body, #render-target {
+	height: 100%
+}
+
 .map {
 	width: 100%;
 }

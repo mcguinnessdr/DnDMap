@@ -16,7 +16,9 @@ class MarkerMap extends Component {
 			zoom: 1,
 			infoVisible: false,
 			mapUrl: "",
-			zooming: false
+			zooming: false,
+			scrolledTop: 0,
+			scrolledLeft: 0
 		};
 
 	}
@@ -80,11 +82,24 @@ class MarkerMap extends Component {
 		}
 	}
 
+	mouseMove(e) {
+		if(e.button === 1)
+		{
+			this.setState({scrolledTop: this.state.scrolledTop + e.movementY});
+			this.setState({scrolledLeft: this.state.scrolledLeft + e.movementX});
+			this.resize();
+		}
+	}
+
 	render ()
 	{
 		  var style = {
 			  map: {
 				  width: this.state.zoom * 100 + "%",
+				  position: "fixed",
+				  top: this.state.scrolledTop,
+				  left: this.state.scrolledLeft,
+				  overflow: "hidden"
 			},
 			  editButton: {
 				  border: "none",
@@ -94,11 +109,19 @@ class MarkerMap extends Component {
 			  }
 		  };
 		  return (
-			  <div style={{width: "100%", height: "100%"}}>
+			  <div style={{width: "100%", height: "100%", overflow: "hidden"}}>
 				  <button onClick={this.editMap.bind(this)} style={style.editButton}>Edit map</button>
 				  <input value={this.state.zoom * 100} onChange={this.zoomChanged.bind(this)} placeholder="set zoom..." style={{position: "fixed", top: 0, right: 0}}/>
-				  <img src={this.state.url} className="map" alt="No maps or image URL is incorrect" style={style.map} onClick={this.handleClick.bind(this)} ref="map" onLoad={this.handleLoaded.bind(this)} />
-				  {this.renderPoIs()}
+				  <img 
+				  src={this.state.url} 
+				  className="map" 
+				  alt="No maps or image URL is incorrect" 
+				  style={style.map} 
+				  ref="map" 
+				  onLoad={this.handleLoaded.bind(this)} 
+				   onClick={this.handleClick.bind(this)}
+				  />
+				  <div style={{position: "relative"}}>{this.renderPoIs()}</div>
 				  {this.state.infoVisible ? <MapInfo ID={this.props.mapId} onClose={this.mapInfoClosed.bind(this)} urlUpdated={this.mapUrlUpdated.bind(this)} /> : null}
 			  </div>
 		  );
@@ -109,6 +132,7 @@ class MarkerMap extends Component {
 		 window.addEventListener("keydown", this.keyDown.bind(this));
 		 window.addEventListener("keyup", this.keyUp.bind(this));
 		 window.addEventListener("wheel", this.handleScroll.bind(this));
+		 window.addEventListener("mousemove", this.mouseMove.bind(this));
 		// this.forceUpdate();
 		 this.resize();
 		 //alert(this.state.mapWidth);
@@ -125,6 +149,7 @@ class MarkerMap extends Component {
 		 window.removeEventListener("keydown", this.keyDown.bind(this));
 		 window.removeEventListener("keyup", this.keyUp.bind(this));
 		 window.removeEventListener("wheel", this.handleScroll.bind(this));
+		 window.removeEventListener("mousemove", this.mouseMove.bind(this));
 		 		 
 	 }
 
