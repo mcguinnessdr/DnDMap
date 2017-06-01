@@ -54,7 +54,7 @@ export default class CityInfo extends Component {
                 padding: 20,
                 border: "solid",
                 borderColor: "grey",
-                borderStyle: "thin",
+                borderWidth: "1px",
                 backgroundColor: "#FFFDFE",
                 display: "block",
                 position: "absolute",
@@ -62,25 +62,32 @@ export default class CityInfo extends Component {
                 left: 0,
                 width: "80%",
                 height: "50%",
-                zIndex: 100
+                zIndex: 100,
+                borderRadius: "5px",
             },
             close: {
                 position: "absolute",
                 top: 10,
-                right: 10
+                right: 10, 
+                border: "none",
+                padding: ".125em .25em"
             },
             delete: {
                 backgroundColor: "red", 
                 color: "white", 
                 position: "absolute",
-                bottom: "10px"
+                bottom: "10px",
+                border: "solid",
+                borderWidth: "1px",
+                borderRadius: ".5em",
+                padding: ".125em .25em"
             }
         };
         return (
             <div ref="div" style={style.div}>
                 <EditableHeader onFinishedEditing={this.finishedChangingName.bind(this)} contents={this.state.name} />
                 {/*{this.state.editingName ? <input onChange={this.nameChanged.bind(this)} onBlur={this.finishedChangingName.bind(this)} value={this.state.name} ref="editName" onLoad={() => {alert(this);this.refs.editName.select()}}/> : <h1 onClick={() => {this.setState({editingName: true})}}>{this.state.name}</h1>}*/}
-                <button style={style.close} onClick={() => {this.props.onClose();}}>X</button>
+                <button style={style.close} onClick={() => {this.props.onClose();}}>x</button>
                 <EditableDescription onFinishedEditing={this.finishedChangingDescription.bind(this)} contents={this.state.desc} />
                 {/*{this.state.editingDesc ? <textarea style={{width:"100%", height: "80%"}} onChange={this.descChanged.bind(this)} onBlur={this.finishedChangingDescription.bind(this)} value={this.state.desc} /> : <div onClick={() => {this.setState({editingDesc: true});}}><ReactMarkdown  source={this.state.desc}/></div>}*/}
                 <button onClick={this.removePoI.bind(this)} style={style.delete}>DELETE</button>
