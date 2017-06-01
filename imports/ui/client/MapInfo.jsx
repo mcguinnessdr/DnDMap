@@ -63,7 +63,7 @@ export default class MapInfo extends Component {
                 borderWidth: "1px",
                 backgroundColor: "#FFFDFE",
                 display: "block",
-                position: "absolute",
+                position: "fixed",
                 top: 0,
                 left: 0,
                 width: "80%",
