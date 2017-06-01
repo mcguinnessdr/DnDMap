@@ -32,5 +32,8 @@ Meteor.methods({
     },
     "maps.updateDesc"(id, newDesc) {
         Maps.update(id, {$set:{desc: newDesc}});
+    },
+    "maps.updateURL"(id, newURL) {
+        Maps.update(id, {$set:{url: newURL}});
     }
 });

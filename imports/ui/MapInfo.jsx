@@ -12,6 +12,7 @@ export default class MapInfo extends Component {
         this.state = {
             name: map.name,
             desc: map.desc,
+            URL: map.url,
             editingName: false,
             editingDesc: false
         }
@@ -29,6 +30,14 @@ export default class MapInfo extends Component {
     finishedChangingDescription(contents) {
         this.setState({desc: contents});
         Meteor.call("maps.updateDesc", this.props.ID, contents);
+    }
+    
+    finishedChangingUrl() {
+        Meteor.call("maps.updateURL", this.props.ID, this.state.URL);
+    }
+
+    urlChanged (e) {
+        this.setState({URL: e.target.value});        
     }
 
     descChanged(e) {
@@ -78,6 +87,7 @@ export default class MapInfo extends Component {
                 <p>map info</p>
                 <EditableHeader onFinishedEditing={this.finishedChangingName.bind(this)} contents={this.state.name} />
                 <button style={style.close} onClick={() => {this.props.onClose();}}>X</button>
+                <input value={this.state.URL} onBlur={this.finishedChangingUrl.bind(this)} onChange={this.urlChanged.bind(this)}/>
                 <EditableDescription onFinishedEditing={this.finishedChangingDescription.bind(this)} contents={this.state.desc} />
                 <button onClick={this.removeMap.bind(this)} style={style.delete}>DELETE</button>
             </div>
