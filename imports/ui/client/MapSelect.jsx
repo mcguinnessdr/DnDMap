@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import {Meteor} from "meteor/meteor";
 import {createContainer} from 'meteor/react-meteor-data';
 import {Mongo} from 'meteor/mongo';
-import {Maps} from "../api/maps.js";
+import {Maps} from "../../api/maps.js";
 import Select from "react-select";
 import 'react-select/dist/react-select.css';
 import MapInfo from "./MapInfo.jsx";

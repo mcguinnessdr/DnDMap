@@ -1,18 +1,17 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import {Mongo} from 'meteor/mongo';
-import {Maps} from "../api/maps.js";
+import {PoIs} from "../../api/pois.js";
 import EditableHeader from "./EditableHeader.jsx";
 import EditableDescription from "./EditableDescription.jsx";
 
-export default class MapInfo extends Component {
+export default class CityInfo extends Component {
     constructor(props) {
         super(props);
-        var map = Maps.findOne({ _id: this.props.ID });
+        var city = PoIs.findOne({ _id: this.props.ID });
         this.state = {
-            name: map.name,
-            desc: map.desc,
-            URL: map.url,
+            name: city.name,
+            desc: city.desc,
             editingName: false,
             editingDesc: false
         }
@@ -24,28 +23,23 @@ export default class MapInfo extends Component {
 
     finishedChangingName(contents) {
         this.setState({name: contents});
-        Meteor.call("maps.updateName", this.props.ID, contents);
+        Meteor.call("pois.updateName", this.props.ID, contents);
+        // PoIs.update({_id: this.props.ID}, {$set:{name: this.state.name}})
+        this.props.onNameChanged(contents);
     }
         
     finishedChangingDescription(contents) {
         this.setState({desc: contents});
-        Meteor.call("maps.updateDesc", this.props.ID, contents);
-    }
-    
-    finishedChangingUrl() {
-        Meteor.call("maps.updateURL", this.props.ID, this.state.URL);
-    }
-
-    urlChanged (e) {
-        this.setState({URL: e.target.value});        
+        Meteor.call("pois.updateDesc", this.props.ID, contents);
+        // PoIs.update({_id: this.props.ID}, {$set:{desc: this.state.desc}});
     }
 
     descChanged(e) {
         this.setState({desc: e.target.value});
     }
 
-    removeMap() {
-        Meteor.call("maps.remove", this.props.ID);
+    removePoI() {
+        Meteor.call("pois.remove", this.props.ID);
         this.props.onClose();
     }
 
@@ -84,12 +78,12 @@ export default class MapInfo extends Component {
         };
         return (
             <div ref="div" style={style.div}>
-                <p>map info</p>
                 <EditableHeader onFinishedEditing={this.finishedChangingName.bind(this)} contents={this.state.name} />
+                {/*{this.state.editingName ? <input onChange={this.nameChanged.bind(this)} onBlur={this.finishedChangingName.bind(this)} value={this.state.name} ref="editName" onLoad={() => {alert(this);this.refs.editName.select()}}/> : <h1 onClick={() => {this.setState({editingName: true})}}>{this.state.name}</h1>}*/}
                 <button style={style.close} onClick={() => {this.props.onClose();}}>X</button>
-                <input value={this.state.URL} onBlur={this.finishedChangingUrl.bind(this)} onChange={this.urlChanged.bind(this)}/>
                 <EditableDescription onFinishedEditing={this.finishedChangingDescription.bind(this)} contents={this.state.desc} />
-                <button onClick={this.removeMap.bind(this)} style={style.delete}>DELETE</button>
+                {/*{this.state.editingDesc ? <textarea style={{width:"100%", height: "80%"}} onChange={this.descChanged.bind(this)} onBlur={this.finishedChangingDescription.bind(this)} value={this.state.desc} /> : <div onClick={() => {this.setState({editingDesc: true});}}><ReactMarkdown  source={this.state.desc}/></div>}*/}
+                <button onClick={this.removePoI.bind(this)} style={style.delete}>DELETE</button>
             </div>
         );
     }
@@ -99,7 +93,8 @@ export default class MapInfo extends Component {
     }
 }
 
-MapInfo.propTypes = { 
+CityInfo.propTypes = { 
     ID: PropTypes.string.isRequired,
-    onClose: PropTypes.func.isRequired
+    onClose: PropTypes.func.isRequired,
+    onNameChanged: PropTypes.func
 };

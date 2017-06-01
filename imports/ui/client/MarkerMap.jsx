@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import {createContainer} from 'meteor/react-meteor-data';
-import {PoIs} from "../api/pois.js";
-import {Maps} from "../api/maps.js";
+import {PoIs} from "../../api/pois.js";
+import {Maps} from "../../api/maps.js";
 import PoI from "./PoI.jsx";
 
 class MarkerMap extends Component {

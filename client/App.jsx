@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import {Meteor} from "meteor/meteor";
 import {createContainer} from 'meteor/react-meteor-data';
-import MarkerMap from "../imports/ui/MarkerMap.jsx";
-import Controls from "../imports/ui/Controls.jsx";
-import AccountsUIWrapper from "../imports/ui/AccountsUIWrapper.jsx";
-import MapSelect from "../imports/ui/MapSelect.jsx";
+import MarkerMap from "../imports/ui/client/MarkerMap.jsx";
+import Controls from "../imports/ui/client/Controls.jsx";
+import AccountsUIWrapper from "../imports/ui/client/AccountsUIWrapper.jsx";
+import MapSelect from "../imports/ui/client/MapSelect.jsx";
 
 var mapImg = '../images/Map.png';
 

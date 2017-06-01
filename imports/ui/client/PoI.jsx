@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import {PoIs} from "../api/pois.js";
+import {PoIs} from "../../api/pois.js";
 import CityInfo from "./CityInfo.jsx";
 
 export default class PoI extends Component {

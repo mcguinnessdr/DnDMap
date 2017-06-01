@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import {Mongo} from 'meteor/mongo';
-import {PoIs} from "../api/pois.js";
+import {PoIs} from "../../api/pois.js";
 
 export default class Controls extends Component {
     handleClick() {
