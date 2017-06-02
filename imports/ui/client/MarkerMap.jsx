@@ -12,6 +12,7 @@ class MarkerMap extends Component {
 		this.leftClick = false;
 		this.dragging = false;
 		this.mouseOver = false;
+		this.rightClick = false;
 		this.state = {
 			mapWidth: 0,
 			mapHeight: 0,
@@ -27,9 +28,11 @@ class MarkerMap extends Component {
 			containerTop: 0,
 			containerLeft: 0,
 			containerOffsetTop: 0,
-			mode: ""
+			mode: "",
+			measureStart: {x: 0, y: 0},
+			measureEnd: {x: 0, y: 0},
+			scale: 1
 		};
-
 	}
 
 	handleClick(e) {
@@ -75,6 +78,10 @@ class MarkerMap extends Component {
 		this.forceUpdate();
 	}
 
+	mapScaleUpdated(newScale) {
+		this.setState({scale: newScale});
+	}
+
 	shiftPressed (pressed) {
 		this.zooming = pressed;
 	}
@@ -108,12 +115,22 @@ class MarkerMap extends Component {
 			this.setState({scrolledLeft: Math.min(Math.max(this.state.scrolledLeft + e.movementX, this.state.containerWidth - this.state.mapWidth), 0)});
 			this.resize();
 		}
+		if(this.rightClick) {
+				this.setState({ measureEnd: {x: (e.clientX - this.state.mapLeft) / this.state.mapWidth, y: (e.clientY - (this.state.mapTop + this.state.containerTop)) / this.state.mapHeight}});			
+		}
 	}
 
 	mouseDown(e) {
 		switch(e.which) {
 			case 1:
 				this.leftClick = true;
+				break;
+			case 3:
+				this.rightClick = true;
+				this.setState({ 
+					measureStart: {x: (e.clientX - this.state.mapLeft) / this.state.mapWidth, y: (e.clientY - (this.state.mapTop + this.state.containerTop)) / this.state.mapHeight},
+					measureEnd: {x: (e.clientX - this.state.mapLeft) / this.state.mapWidth, y: (e.clientY - (this.state.mapTop + this.state.containerTop)) / this.state.mapHeight}
+				});
 				break;
 		}
 	}
@@ -122,6 +139,9 @@ class MarkerMap extends Component {
 		switch(e.which) {
 			case 1:
 				this.leftClick = false;
+				break;
+			case 3:
+				this.rightClick = false;
 				break;
 		}
 	}
@@ -140,6 +160,37 @@ class MarkerMap extends Component {
 
 	mouseOutMap() {
 		this.mouseOver = false;
+	}
+
+	handleContextMenu(e) {
+		e.preventDefault();
+		return false;
+	}
+
+	drawLine() {
+		const ctx = this.refs.canvas.getContext("2d");
+		ctx.clearRect(0,0,this.state.mapWidth, this.state.mapHeight);
+		ctx.beginPath();
+		var start = {x: this.state.measureStart.x * this.state.mapWidth, y: this.state.measureStart.y * this.state.mapHeight};
+		var end = {x: this.state.measureEnd.x * this.state.mapWidth, y: this.state.measureEnd.y * this.state.mapHeight};
+		ctx.moveTo(start.x, start.y );
+		ctx.lineTo(end.x, end.y);
+		ctx.closePath();
+		ctx.stroke();
+		ctx.font = "bold 30px Arial";
+		ctx.fillStyle = "white";
+		ctx.lineWidth = 2;
+		ctx.strokeStyle = "black";
+		var distance = (Math.sqrt(Math.pow(start.x - end.x, 2) + Math.pow(start.y - end.y, 2)) / this.state.zoom / this.state.scale).toFixed(2);
+		if(distance != 0){
+			ctx.fillText(distance, (start.x + end.x) / 2, (start.y + end.y) / 2);
+			ctx.strokeText(distance, (start.x + end.x) / 2, (start.y + end.y) / 2);
+		}
+	}
+
+	preventDefault(e) {
+		e.preventDefault();
+		return false;
 	}
 
 	render ()
@@ -166,6 +217,15 @@ class MarkerMap extends Component {
 				  padding: ".125em .25em",
 				  whiteSpace: "nowrap",
 				  backgroundColor: "darkGrey"
+			  },
+			  canvas: {
+				  width: this.state.zoom * 100 + "%",
+				  position: "absolute",
+				  top: this.state.scrolledTop,
+				  left: this.state.scrolledLeft,
+				  overflow: "hidden",
+				  pointerEvents: "none",
+				  background: "none"
 			  }
 		  };
 		  return (
@@ -176,21 +236,23 @@ class MarkerMap extends Component {
 					  <button onClick={this.modePois.bind(this)} style={this.state.mode === "pois" ? style.buttonSelected : style.button}>Add PoIs</button>
 				  </div>
 				  <div ref="container" style={{height:"100%", position: "relative", overflow: "hidden"}}>
-				  <img 
-				  src={this.state.url} 
-				  className="map" 
-				  alt="No maps or image URL is incorrect" 
-				  style={style.map} 
-				  ref="map" 
-				  onLoad={this.handleLoaded.bind(this)} 
-				  onClick={this.handleClick.bind(this)}
-				  draggable="false"
-				  onMouseOver={this.mouseOverMap.bind(this)}
-				  onMouseOut={this.mouseOutMap.bind(this)}
-				  />
+					<img 
+					src={this.state.url} 
+					className="map" 
+					alt="No maps or image URL is incorrect" 
+					style={style.map} 
+					ref="map" 
+					onLoad={this.handleLoaded.bind(this)} 
+					onClick={this.handleClick.bind(this)}
+					draggable="false"
+					onMouseOver={this.mouseOverMap.bind(this)}
+					onMouseOut={this.mouseOutMap.bind(this)}
+					onContextMenu={this.handleContextMenu.bind(this)}
+					/>
 				  <div>{this.renderPoIs()}</div>
+					<canvas style={style.canvas} ref="canvas" height={this.state.mapHeight} width={this.state.mapWidth} onContextMenu={this.handleContextMenu.bind(this)} onClick={this.preventDefault.bind(this)} />
 				  </div>
-				  {this.state.infoVisible ? <MapInfo ID={this.props.mapId} onClose={this.mapInfoClosed.bind(this)} urlUpdated={this.mapUrlUpdated.bind(this)} /> : null}
+				  {this.state.infoVisible ? <MapInfo ID={this.props.mapId} onClose={this.mapInfoClosed.bind(this)} urlUpdated={this.mapUrlUpdated.bind(this)} scaleUpdated={this.mapScaleUpdated.bind(this)}/> : null}
 			  </div>
 		  );
 	}
@@ -203,6 +265,8 @@ class MarkerMap extends Component {
 		 window.addEventListener("mousemove", this.mouseMove.bind(this));
 		 window.addEventListener("mousedown", this.mouseDown.bind(this));
 		 window.addEventListener("mouseup", this.mouseUp.bind(this));
+
+		 this.drawLine();
 		// this.forceUpdate();
 		 this.resize();
 		 //alert(this.state.mapWidth);
@@ -210,7 +274,11 @@ class MarkerMap extends Component {
 
 	 componentWillReceiveProps(nextProps) {
 		if(nextProps.mapId !== "") {
-			this.setState({url: Maps.findOne(nextProps.mapId).url})
+			var map = Maps.findOne(nextProps.mapId);
+			this.setState({
+				url: map.url,
+				scale: map.scale
+			});
 		}
 	 }
 
@@ -233,6 +301,7 @@ class MarkerMap extends Component {
 		if(this.refs.map.clientHeight !== this.state.mapHeight){
 			this.resize();
 		}
+		this.drawLine();
 	 }
 
 	 resize() {
