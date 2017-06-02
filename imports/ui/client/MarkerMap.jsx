@@ -23,12 +23,13 @@ class MarkerMap extends Component {
 			containerHeight: 0,
 			containerTop: 0,
 			containerLeft: 0,
+			containerOffsetTop: 0
 		};
 
 	}
 
 	handleClick(e) {
-		Meteor.call("pois.insert", (e.pageX - this.state.mapLeft) / this.state.mapWidth, (e.pageY - this.state.mapTop) / this.state.mapHeight, this.props.mapId)
+		Meteor.call("pois.insert", (e.clientX - this.state.mapLeft) / this.state.mapWidth, (e.clientY - (this.state.mapTop + this.state.containerTop)) / this.state.mapHeight, this.props.mapId);
 		// PoIs.insert({
 		// 	owner: Meteor.userId(),
 		// 	username: Meteor.user().username,
@@ -41,7 +42,7 @@ class MarkerMap extends Component {
 
 	renderPoIs() {
 		return this.props.pois.map((poi) => (
-			poi.mapId === this.props.mapId ? <PoI posX={poi.posX  * this.state.mapWidth + this.state.mapLeft} posY={poi.posY * this.state.mapHeight + this.state.mapTop} ID={poi._id}/> : null
+			poi.mapId === this.props.mapId ? <PoI posX={poi.posX  * this.state.mapWidth + this.state.mapLeft} posY={poi.posY  * this.state.mapHeight + this.state.mapTop} ID={poi._id}/> : null
 			));
 	}
 
@@ -89,7 +90,7 @@ class MarkerMap extends Component {
 	mouseMove(e) {
 		if(e.button === 1)
 		{
-			this.setState({scrolledTop: Math.min(Math.max(this.state.scrolledTop + e.movementY, this.state.containerHeight - this.state.mapHeight), 0 + this.state.containerTop)});
+			this.setState({scrolledTop: Math.min(Math.max(this.state.scrolledTop + e.movementY, this.state.containerHeight - this.state.mapHeight - this.state.containerTop), 0)});
 			this.setState({scrolledLeft: Math.min(Math.max(this.state.scrolledLeft + e.movementX, this.state.containerWidth - this.state.mapWidth), 0)});
 			this.resize();
 		}
@@ -100,7 +101,7 @@ class MarkerMap extends Component {
 		  var style = {
 			  map: {
 				  width: this.state.zoom * 100 + "%",
-				  position: "fixed",
+				  position: "absolute",
 				  top: this.state.scrolledTop,
 				  left: this.state.scrolledLeft,
 				  overflow: "hidden"
@@ -111,14 +112,13 @@ class MarkerMap extends Component {
 				  borderRadius: ".5em",
 				  padding: ".125em .25em",
 				  whiteSpace: "nowrap",
-				  zIndex: 1
 			  }
 		  };
 		  return (
-			  <div style={{width: "100%", height: "100%", overflow: "hidden"}}>
+			  <div style={{width: "100%", height: "100%", overflow: "hidden", position: "relative"}}>
 				  <input value={this.state.zoom * 100} onChange={this.zoomChanged.bind(this)} placeholder="set zoom..." style={{position: "fixed", top: 0, right: 0}}/>
 				  <div><button onClick={this.editMap.bind(this)} style={style.editButton}>Edit map</button></div>
-				  <div ref="container" style={{height:"100%"}}>
+				  <div ref="container" style={{height:"100%", position: "relative", overflow: "hidden"}}>
 				  <img 
 				  src={this.state.url} 
 				  className="map" 
@@ -128,8 +128,8 @@ class MarkerMap extends Component {
 				  onLoad={this.handleLoaded.bind(this)} 
 				  onClick={this.handleClick.bind(this)}
 				  />
+				  <div>{this.renderPoIs()}</div>
 				  </div>
-				  <div style={{position: "relative"}}>{this.renderPoIs()}</div>
 				  {this.state.infoVisible ? <MapInfo ID={this.props.mapId} onClose={this.mapInfoClosed.bind(this)} urlUpdated={this.mapUrlUpdated.bind(this)} /> : null}
 			  </div>
 		  );
@@ -181,7 +181,8 @@ class MarkerMap extends Component {
 			 mapLeft: this.refs.map.offsetLeft,			
 			 containerWidth: this.refs.container.clientWidth,
 			 containerHeight: this.refs.container.clientHeight,
-			 containerTop: this.refs.container.offsetTop,
+			 containerTop: this.refs.container.getBoundingClientRect().top,
+			 containerOffsetTop: this.refs.container.offsetTop,
 			 containerLeft: this.refs.container.offsetLeft
 		  });
 	 }

@@ -38,7 +38,7 @@ export default class PoI extends Component {
 	render ()
 	{
 		var style = {
-			position: 'fixed',
+			position: 'absolute',
 			top: this.props.posY,
 			left: this.props.posX,
 			// background: "none",

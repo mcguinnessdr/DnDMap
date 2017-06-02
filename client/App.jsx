@@ -25,6 +25,7 @@ class App extends Component {
 		  var style = {
 			  width: "100%",
 			  height: "100%",
+			  position: "relative",
 			  overflow: "hidden"
 		  };
 		  var mapStyle = {
