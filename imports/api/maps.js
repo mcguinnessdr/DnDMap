@@ -23,7 +23,9 @@ Meteor.methods({
             shared: "",
             name: name,
             url: url,
-            desc: ""
+            desc: "",
+            scale: 0,
+            units: ""
         })
     },
     "maps.remove"(id) {
@@ -37,5 +39,11 @@ Meteor.methods({
     },
     "maps.updateURL"(id, newURL) {
         Maps.update(id, {$set:{url: newURL}});
+    },
+    "maps.updateScale"(id, newScale) {
+        Maps.update(id, {$set:{scale: newScale}});
+    },
+    "maps.updateUnits"(id, newUnits) {
+        Maps.update(id, {$set:{units: newUnits}});
     }
 });

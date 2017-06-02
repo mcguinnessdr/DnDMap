@@ -14,7 +14,9 @@ export default class MapInfo extends Component {
             desc: map.desc,
             URL: map.url,
             editingName: false,
-            editingDesc: false
+            editingDesc: false,
+            scale: map.scale,
+            units: ""
         }
     }
 
@@ -40,6 +42,17 @@ export default class MapInfo extends Component {
         this.setState({URL: e.target.value});  
         if(this.props.urlUpdated !== undefined){
             this.props.urlUpdated(e.target.value);
+        }      
+    }
+
+    finishedChangingScale() {
+        Meteor.call("maps.updateScale", this.props.ID, this.state.scale);
+    }
+
+    scaleChanged (e) {
+        this.setState({scale: e.target.value});  
+        if(this.props.scaleUpdated !== undefined){
+            this.props.scaleUpdated(e.target.value);
         }      
     }
 
@@ -97,7 +110,8 @@ export default class MapInfo extends Component {
                 <p>map info</p>
                 <EditableHeader onFinishedEditing={this.finishedChangingName.bind(this)} contents={this.state.name} placeholder="Enter map name..." />
                 <button style={style.close} onClick={() => {this.props.onClose();}}>X</button>
-                <input value={this.state.URL} onBlur={this.finishedChangingUrl.bind(this)} onChange={this.urlChanged.bind(this)}/>
+                <input style={{display: "block"}} value={this.state.URL} onBlur={this.finishedChangingUrl.bind(this)} onChange={this.urlChanged.bind(this)}/>
+                <input style={{display: "block"}} value={this.state.scale} onBlur={this.finishedChangingScale.bind(this)} onChange={this.scaleChanged.bind(this)}/>
                 <EditableDescription onFinishedEditing={this.finishedChangingDescription.bind(this)} contents={this.state.desc} placeholder="Enter map description..." />
                 <button onClick={this.removeMap.bind(this)} style={style.delete}>DELETE</button>
             </div>
