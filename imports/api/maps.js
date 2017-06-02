@@ -5,9 +5,10 @@ export const Maps = new Mongo.Collection("maps");
 
 if(Meteor.isServer){
     Meteor.publish("maps", function mapsPublication() {
-        return Maps.find({
-            owner: this.userId
-        });
+        return Maps.find({ $or:[
+            { owner: this.userId },
+            {shared: this.userId}
+        ]});
     });
 }
 
@@ -19,6 +20,7 @@ Meteor.methods({
         Maps.insert({
             owner: Meteor.userId(),
 			username: Meteor.user().username,
+            shared: "",
             name: name,
             url: url,
             desc: ""
