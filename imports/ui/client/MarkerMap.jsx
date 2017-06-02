@@ -94,6 +94,9 @@ class MarkerMap extends Component {
 	handleScroll(e) {
 		if(this.zooming || true){
 			this.setState({zoom: Math.round((this.state.zoom + (e.deltaY * this.state.zoom * -.001)) * 100) / 100});
+			this.setState({scrolledTop: Math.min(Math.max(this.state.scrolledTop, this.state.containerHeight - this.state.mapHeight - this.state.containerTop), 0)});
+			this.setState({scrolledLeft: Math.min(Math.max(this.state.scrolledLeft, this.state.containerWidth - this.state.mapWidth), 0)});
+			this.resize();
 		}
 	}
 
