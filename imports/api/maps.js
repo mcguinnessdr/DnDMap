@@ -24,7 +24,7 @@ Meteor.methods({
             name: name,
             url: url,
             desc: "",
-            scale: 0,
+            scale: 1,
             units: ""
         })
     },
