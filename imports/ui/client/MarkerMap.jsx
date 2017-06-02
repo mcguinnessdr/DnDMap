@@ -8,6 +8,10 @@ import MapInfo from "./MapInfo.jsx";
 class MarkerMap extends Component {
 	constructor(props) {
 		super(props);
+		this.zooming = false;
+		this.leftClick = false;
+		this.dragging = false;
+		this.mouseOver = false;
 		this.state = {
 			mapWidth: 0,
 			mapHeight: 0,
@@ -16,20 +20,26 @@ class MarkerMap extends Component {
 			zoom: 1,
 			infoVisible: false,
 			mapUrl: "",
-			zooming: false,
 			scrolledTop: 0,
 			scrolledLeft: 0,
 			containerWidth: 0,
 			containerHeight: 0,
 			containerTop: 0,
 			containerLeft: 0,
-			containerOffsetTop: 0
+			containerOffsetTop: 0,
+			mode: ""
 		};
 
 	}
 
 	handleClick(e) {
-		Meteor.call("pois.insert", (e.clientX - this.state.mapLeft) / this.state.mapWidth, (e.clientY - (this.state.mapTop + this.state.containerTop)) / this.state.mapHeight, this.props.mapId);
+		if(this.dragging){
+			this.dragging = false;
+			return;
+		}
+		if(this.state.mode === "pois"){
+			Meteor.call("pois.insert", (e.clientX - this.state.mapLeft) / this.state.mapWidth, (e.clientY - (this.state.mapTop + this.state.containerTop)) / this.state.mapHeight, this.props.mapId);
+		}
 		// PoIs.insert({
 		// 	owner: Meteor.userId(),
 		// 	username: Meteor.user().username,
@@ -66,7 +76,7 @@ class MarkerMap extends Component {
 	}
 
 	shiftPressed (pressed) {
-		this.setState({zooming: pressed});
+		this.zooming = pressed;
 	}
 
 	keyDown(e) {
@@ -82,18 +92,51 @@ class MarkerMap extends Component {
 	}
 
 	handleScroll(e) {
-		if(this.state.zooming){
+		if(this.zooming || true){
 			this.setState({zoom: Math.round((this.state.zoom + (e.deltaY * this.state.zoom * -.001)) * 100) / 100});
 		}
 	}
 
 	mouseMove(e) {
-		if(e.button === 1)
+		if(this.leftClick && this.mouseOver)
 		{
+			this.dragging = true;
 			this.setState({scrolledTop: Math.min(Math.max(this.state.scrolledTop + e.movementY, this.state.containerHeight - this.state.mapHeight - this.state.containerTop), 0)});
 			this.setState({scrolledLeft: Math.min(Math.max(this.state.scrolledLeft + e.movementX, this.state.containerWidth - this.state.mapWidth), 0)});
 			this.resize();
 		}
+	}
+
+	mouseDown(e) {
+		switch(e.which) {
+			case 1:
+				this.leftClick = true;
+				break;
+		}
+	}
+
+	mouseUp(e) {
+		switch(e.which) {
+			case 1:
+				this.leftClick = false;
+				break;
+		}
+	}
+
+	modePois() {
+		if (this.state.mode === "pois") {
+			this.setState({ mode: "" });
+		} else {
+			this.setState({ mode: "pois" });
+		}
+	}
+
+	mouseOverMap() {
+		this.mouseOver = true;
+	}
+
+	mouseOutMap() {
+		this.mouseOver = false;
 	}
 
 	render ()
@@ -106,18 +149,29 @@ class MarkerMap extends Component {
 				  left: this.state.scrolledLeft,
 				  overflow: "hidden"
 			},
-			  editButton: {
+			  button: {
 				  position: "relative",
 				  border: "none",
 				  borderRadius: ".5em",
 				  padding: ".125em .25em",
 				  whiteSpace: "nowrap",
+			  },
+			  buttonSelected: {
+				  position: "relative",
+				  border: "none",
+				  borderRadius: ".5em",
+				  padding: ".125em .25em",
+				  whiteSpace: "nowrap",
+				  backgroundColor: "darkGrey"
 			  }
 		  };
 		  return (
 			  <div style={{width: "100%", height: "100%", overflow: "hidden", position: "relative"}}>
 				  <input value={this.state.zoom * 100} onChange={this.zoomChanged.bind(this)} placeholder="set zoom..." style={{position: "fixed", top: 0, right: 0}}/>
-				  <div><button onClick={this.editMap.bind(this)} style={style.editButton}>Edit map</button></div>
+				  <div>
+					  <button onClick={this.editMap.bind(this)} style={style.button}>Edit map</button>
+					  <button onClick={this.modePois.bind(this)} style={this.state.mode === "pois" ? style.buttonSelected : style.button}>Add PoIs</button>
+				  </div>
 				  <div ref="container" style={{height:"100%", position: "relative", overflow: "hidden"}}>
 				  <img 
 				  src={this.state.url} 
@@ -127,6 +181,9 @@ class MarkerMap extends Component {
 				  ref="map" 
 				  onLoad={this.handleLoaded.bind(this)} 
 				  onClick={this.handleClick.bind(this)}
+				  draggable="false"
+				  onMouseOver={this.mouseOverMap.bind(this)}
+				  onMouseOut={this.mouseOutMap.bind(this)}
 				  />
 				  <div>{this.renderPoIs()}</div>
 				  </div>
@@ -141,6 +198,8 @@ class MarkerMap extends Component {
 		 window.addEventListener("keyup", this.keyUp.bind(this));
 		 window.addEventListener("wheel", this.handleScroll.bind(this));
 		 window.addEventListener("mousemove", this.mouseMove.bind(this));
+		 window.addEventListener("mousedown", this.mouseDown.bind(this));
+		 window.addEventListener("mouseup", this.mouseUp.bind(this));
 		// this.forceUpdate();
 		 this.resize();
 		 //alert(this.state.mapWidth);
@@ -158,6 +217,8 @@ class MarkerMap extends Component {
 		 window.removeEventListener("keyup", this.keyUp.bind(this));
 		 window.removeEventListener("wheel", this.handleScroll.bind(this));
 		 window.removeEventListener("mousemove", this.mouseMove.bind(this));
+		 window.removeEventListener("mousedown", this.mouseDown.bind(this));
+		 window.removeEventListener("mouseup", this.mouseUp.bind(this));
 		 		 
 	 }
 
