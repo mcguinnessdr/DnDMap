@@ -23,7 +23,7 @@ Meteor.methods({
         Maps.insert({
             owner: Meteor.userId(),
 			username: Meteor.user().username,
-            shared: "",
+            shared: [],
             name: name,
             url: url,
             desc: "",
@@ -52,7 +52,10 @@ Meteor.methods({
     "maps.updateUnits"(id, newUnits) {
         Maps.update(id, {$set:{units: newUnits}});
     },
-    "maps.updateShared"(id, newShared) {
-        Maps.update(id, {$set:{shared: newShared}});
+    "maps.addShared"(id, newShared) {
+        Maps.update(id, {$addToSet:{shared: newShared}});
+    },
+    "maps.removeShared"(id, newShared) {
+        Maps.update(id, {$pull:{shared: newShared}});
     }
 });

@@ -4,6 +4,7 @@ import {Mongo} from 'meteor/mongo';
 import {Maps} from "../../api/maps.js";
 import EditableHeader from "./EditableHeader.jsx";
 import EditableDescription from "./EditableDescription.jsx";
+import SharedWith from "./SharedWith.jsx";
 
 export default class MapInfo extends Component {
     constructor(props) {
@@ -124,7 +125,7 @@ export default class MapInfo extends Component {
                 <button style={style.close} onClick={() => {this.props.onClose();}}>X</button>
                 <input style={{display: "block"}} value={this.state.URL} onBlur={this.finishedChangingUrl.bind(this)} onChange={this.urlChanged.bind(this)}/>
                 <input style={{display: "block"}} value={this.state.scale} onBlur={this.finishedChangingScale.bind(this)} onChange={this.scaleChanged.bind(this)}/>
-                <input style={{display: "block"}} value={this.state.shared} onBlur={this.finishedChangingShared.bind(this)} onChange={this.sharedChanged.bind(this)}/>
+                <SharedWith ID={this.props.ID}/>
                 <EditableDescription onFinishedEditing={this.finishedChangingDescription.bind(this)} contents={this.state.desc} placeholder="Enter map description..." />
                 <button onClick={this.removeMap.bind(this)} style={style.delete}>DELETE</button>
             </div>
