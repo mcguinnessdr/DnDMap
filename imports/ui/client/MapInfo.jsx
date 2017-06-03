@@ -16,7 +16,8 @@ export default class MapInfo extends Component {
             editingName: false,
             editingDesc: false,
             scale: map.scale,
-            units: ""
+            units: "",
+            shared: map.shared
         }
     }
 
@@ -53,6 +54,17 @@ export default class MapInfo extends Component {
         this.setState({scale: e.target.value});  
         if(this.props.scaleUpdated !== undefined){
             this.props.scaleUpdated(e.target.value);
+        }      
+    }
+
+    finishedChangingShared() {
+        Meteor.call("maps.updateShared", this.props.ID, this.state.shared);
+    }
+
+    sharedChanged (e) {
+        this.setState({shared: e.target.value});  
+        if(this.props.sharedUpdated !== undefined){
+            this.props.sharedUpdated(e.target.value);
         }      
     }
 
@@ -112,6 +124,7 @@ export default class MapInfo extends Component {
                 <button style={style.close} onClick={() => {this.props.onClose();}}>X</button>
                 <input style={{display: "block"}} value={this.state.URL} onBlur={this.finishedChangingUrl.bind(this)} onChange={this.urlChanged.bind(this)}/>
                 <input style={{display: "block"}} value={this.state.scale} onBlur={this.finishedChangingScale.bind(this)} onChange={this.scaleChanged.bind(this)}/>
+                <input style={{display: "block"}} value={this.state.shared} onBlur={this.finishedChangingShared.bind(this)} onChange={this.sharedChanged.bind(this)}/>
                 <EditableDescription onFinishedEditing={this.finishedChangingDescription.bind(this)} contents={this.state.desc} placeholder="Enter map description..." />
                 <button onClick={this.removeMap.bind(this)} style={style.delete}>DELETE</button>
             </div>

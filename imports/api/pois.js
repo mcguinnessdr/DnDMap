@@ -28,6 +28,9 @@ Meteor.methods({
         })
     },
     "pois.remove"(id) {
+        if(this.userId !== PoIs.findOne(id).owner){
+            return;
+        }
         PoIs.remove(id);
     },
     "pois.updateName"(id, newName) {
