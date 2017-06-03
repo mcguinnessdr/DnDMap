@@ -1,13 +1,14 @@
 import {Mongo} from 'meteor/mongo';
 import {Meteor} from "meteor/meteor";
+import {Maps} from "./maps.js";
 
 export const PoIs = new Mongo.Collection("pois");
 
 if(Meteor.isServer){
-    Meteor.publish("pois", function poisPublication() {
-        return PoIs.find({
-            owner: this.userId
-        });
+    Meteor.publish("pois", function poisPublication() { 
+        return PoIs.find(
+            { mapId:{ $in: Maps.find({}).fetch().map((map) => {return map._id}) }}
+        );
     });
 }
 
