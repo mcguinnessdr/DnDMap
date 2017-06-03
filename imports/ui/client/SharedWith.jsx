@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import {createContainer} from 'meteor/react-meteor-data';
 
 import {Maps} from "../../api/maps.js";
+import SharedUser from "./SharedUser.jsx";
 
 class SharedWith extends Component {
 	constructor(props){
@@ -45,8 +46,12 @@ class SharedWith extends Component {
 
     renderShared() {
         return this.props.maps.map((map) => (
-            map._id === this.props.ID ? map.shared.map((shared) => (<p>{shared}</p>)) : null
+            map._id === this.props.ID ? map.shared.map((shared) => (<SharedUser username={shared} onDelete={this.deleteUsername.bind(this)}/>)) : null
         ));
+    }
+
+    deleteUsername(username) {
+        Meteor.call("maps.removeShared", this.props.ID, username);
     }
 
 	render ()
