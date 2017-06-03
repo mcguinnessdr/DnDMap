@@ -7,7 +7,7 @@ if(Meteor.isServer){
     Meteor.publish("maps", function mapsPublication() {
         return Maps.find({ $or:[
             { owner: this.userId },
-            {shared: this.userId}
+            { shared: Meteor.users.findOne(this.userId).emails[0].address }
         ]});
     });
 }
