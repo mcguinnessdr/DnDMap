@@ -123,8 +123,8 @@ export default class MapInfo extends Component {
                 <p>map info</p>
                 <EditableHeader onFinishedEditing={this.finishedChangingName.bind(this)} contents={this.state.name} placeholder="Enter map name..." />
                 <button style={style.close} onClick={() => {this.props.onClose();}}>X</button>
-                <input style={{display: "block"}} value={this.state.URL} onBlur={this.finishedChangingUrl.bind(this)} onChange={this.urlChanged.bind(this)} placeholder="Enter an image url..."/>
-                <input style={{display: "block"}} value={this.state.scale} onBlur={this.finishedChangingScale.bind(this)} onChange={this.scaleChanged.bind(this)} placeholder="Enter a scale..."/>
+                <input style={{display: "block", float: "right", clear: "right"}} value={this.state.URL} onBlur={this.finishedChangingUrl.bind(this)} onChange={this.urlChanged.bind(this)} placeholder="Enter an image url..."/>
+                <input style={{display: "block", float: "right", clear: "right"}} value={this.state.scale} onBlur={this.finishedChangingScale.bind(this)} onChange={this.scaleChanged.bind(this)} placeholder="Enter a scale..."/>
                 <SharedWith ID={this.props.ID}/>
                 <EditableDescription onFinishedEditing={this.finishedChangingDescription.bind(this)} contents={this.state.desc} placeholder="Enter map description..." />
                 <button onClick={this.removeMap.bind(this)} style={style.delete}>DELETE</button>
