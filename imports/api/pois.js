@@ -6,8 +6,8 @@ export const PoIs = new Mongo.Collection("pois");
 
 if(Meteor.isServer){
     Meteor.publish("pois", function poisPublication() { 
-        return PoIs.find(
-            { mapId:{ $in: Maps.find({}).fetch().map((map) => {return map._id}) }}
+        return PoIs.find({
+            mapId:{ $in: Maps.find({}).fetch().map((map) => {return map._id}) }}
         );
     });
 }
@@ -24,7 +24,8 @@ Meteor.methods({
 			posX: posX,
 			posY: posY,
 			name: "new city",
-			desc: "new description"
+			desc: "new description",
+            privateDesc: []
         })
     },
     "pois.remove"(id) {
@@ -38,5 +39,13 @@ Meteor.methods({
     },
     "pois.updateDesc"(id, newDesc) {
         PoIs.update(id, {$set:{desc: newDesc}});
+    },
+    "pois.updatePrivateDesc"(id, newDesc) {
+        if(PoIs.findOne({"_id": id, "privateDesc.id": this.userId})) {
+            PoIs.update({"_id": id, "privateDesc.id": this.userId}, { $set: { "privateDesc.$.desc":  newDesc }});
+        }else
+        {
+            PoIs.update(id, { $addToSet: { privateDesc: {id: this.userId, desc: newDesc} }});
+        }
     }
 });

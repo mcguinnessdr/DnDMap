@@ -22,8 +22,21 @@ export default class EditableDescription extends Component {
         });
     }
 
+    divClicked() {
+        //alert("clicked");
+        this.setState({ editing: true });
+    }
+
     render() {
-        return this.state.editing ? <textarea style={{width:"80%", height: "70%"}} onChange={this.contentsChanged.bind(this)} onBlur={this.finishedEditing.bind(this)} value={this.state.contents} ref="edit" /> : <div onClick={() => {this.setState({editing: true});}}><ReactMarkdown source={this.state.contents !== "" ? this.state.contents : this.props.placeholder}/></div>;
+        return this.state.editing ? <textarea style={{display: "block", width:"80%", height: "70%"}} onChange={this.contentsChanged.bind(this)} onBlur={this.finishedEditing.bind(this)} value={this.state.contents} ref="edit" /> : <div onClick={this.divClicked.bind(this)}><ReactMarkdown source={this.state.contents !== "" ? this.state.contents : this.props.placeholder}/></div>;
+    }
+
+    componentDidUpdate(prevState) {
+        if(prevState.editing !== this.state.editing && this.state.editing === true)
+        {
+            //alert(this.state.editing);
+            this.refs.edit.focus();
+        }
     }
 }
 

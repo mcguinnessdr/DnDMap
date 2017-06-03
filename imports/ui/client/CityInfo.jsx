@@ -12,8 +12,7 @@ export default class CityInfo extends Component {
         this.state = {
             name: city.name,
             desc: city.desc,
-            editingName: false,
-            editingDesc: false
+            privateDesc: ""
         }
     }
 
@@ -36,6 +35,16 @@ export default class CityInfo extends Component {
 
     descChanged(e) {
         this.setState({desc: e.target.value});
+    }
+
+    finishedChangingPrivateDescription(contents) {
+        this.setState({privateDesc: contents});
+        Meteor.call("pois.updatePrivateDesc", this.props.ID, contents);
+        // PoIs.update({_id: this.props.ID}, {$set:{desc: this.state.desc}});
+    }
+
+    privateDescChanged(e) {
+        this.setState({privateDesc: e.target.value});
     }
 
     removePoI() {
@@ -80,7 +89,7 @@ export default class CityInfo extends Component {
                 border: "solid",
                 borderWidth: "1px",
                 borderRadius: ".5em",
-                padding: ".125em .25em"
+                padding: ".125em .25em",
             }
         };
         return (
@@ -89,6 +98,7 @@ export default class CityInfo extends Component {
                 {/*{this.state.editingName ? <input onChange={this.nameChanged.bind(this)} onBlur={this.finishedChangingName.bind(this)} value={this.state.name} ref="editName" onLoad={() => {alert(this);this.refs.editName.select()}}/> : <h1 onClick={() => {this.setState({editingName: true})}}>{this.state.name}</h1>}*/}
                 <button style={style.close} onClick={() => {this.props.onClose();}}>x</button>
                 <EditableDescription onFinishedEditing={this.finishedChangingDescription.bind(this)} contents={this.state.desc} placeholder="Enter place description..." />
+                {/*<EditableDescription onFinishedEditing={this.finishedChangingPrivateDescription.bind(this)} contents={this.state.privateDesc} placeholder="Enter private description..." />*/}
                 {/*{this.state.editingDesc ? <textarea style={{width:"100%", height: "80%"}} onChange={this.descChanged.bind(this)} onBlur={this.finishedChangingDescription.bind(this)} value={this.state.desc} /> : <div onClick={() => {this.setState({editingDesc: true});}}><ReactMarkdown  source={this.state.desc}/></div>}*/}
                 <button onClick={this.removePoI.bind(this)} style={style.delete}>DELETE</button>
             </div>

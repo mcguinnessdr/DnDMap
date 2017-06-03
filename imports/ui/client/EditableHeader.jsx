@@ -21,7 +21,19 @@ export default class EditableH1 extends Component {
     }
 
     render() {
-        return this.state.editing ? <input onChange={this.contentsChanged.bind(this)} onBlur={this.finishedEditing.bind(this)} value={this.state.contents} ref="edit" /> : <h1 onClick={() => { this.setState({ editing: true }) }}>{this.state.contents !== "" ? this.state.contents : this.props.placeholder}</h1>;
+        style = {
+            fontWeight: "bold",
+            fontSize: "30px"
+        }
+
+        return this.state.editing ? <input style={style} onChange={this.contentsChanged.bind(this)} onBlur={this.finishedEditing.bind(this)} value={this.state.contents} ref="edit" /> : <p style={style} onClick={() => { this.setState({ editing: true }) }}>{this.state.contents !== "" ? this.state.contents : this.props.placeholder}</p>;
+    }
+
+    componentDidUpdate(prevState) {
+        if(prevState.editing !== this.state.editing && this.state.editing == true)
+        {
+            this.refs.edit.focus();
+        }
     }
 }
 
