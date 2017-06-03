@@ -53,9 +53,15 @@ Meteor.methods({
         Maps.update(id, {$set:{units: newUnits}});
     },
     "maps.addShared"(id, newShared) {
+        if (this.userId !== Maps.findOne(id).owner) {
+            return;
+        }
         Maps.update(id, {$addToSet:{shared: newShared}});
     },
     "maps.removeShared"(id, newShared) {
+        if (this.userId !== Maps.findOne(id).owner) {
+            return;
+        }
         Maps.update(id, {$pull:{shared: newShared}});
     }
 });
