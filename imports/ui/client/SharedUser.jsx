@@ -7,6 +7,13 @@ export default class SharedUser extends Component {
 
     render() {
         var style = {
+            div: {
+                border: "solid",
+                borderRadius: ".5em",
+                borderWidth: "1px",
+                borderColor: "#D6D6D6",
+                display: "inline-block"
+            },
             button: {
 				  position: "relative",
 				  border: "none",
@@ -15,12 +22,12 @@ export default class SharedUser extends Component {
 				  whiteSpace: "nowrap",
                   verticalAlign: "text-center",
                   textAlign: "center",
-                  margin: "0em .5em"
+                  margin: "0em 0em 0em .5em"
 			  }
             };
         return (
-            <div>
-                <p><span>{this.props.username}</span><button style={style.button} onClick={this.handleClick.bind(this)}>x</button></p>
+            <div >
+                <p style={style.div}><span>{this.props.username}</span><button style={style.button} onClick={this.handleClick.bind(this)}>x</button></p>
                 
             </div>
         );
