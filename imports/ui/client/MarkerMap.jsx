@@ -231,16 +231,27 @@ class MarkerMap extends Component {
 				  overflow: "hidden",
 				  pointerEvents: "none",
 				  background: "none"
+			  },
+			  firstDiv: {
+				width: "100%", 
+				height: "100%", 
+				overflow: "hidden", 
+				position: "relative"
+			  },
+			  zoom: {
+				position: "fixed", 
+				top: 0, 
+				right: 0
 			  }
 		  };
 		  return (
-			  <div style={{width: "100%", height: "100%", overflow: "hidden", position: "relative"}}>
-				  <input value={Math.round(this.state.zoom * 100)} onChange={this.zoomChanged.bind(this)} placeholder="set zoom..." style={{position: "fixed", top: 0, right: 0}}/>
+			  <div style={style.firstDiv}>
+				  <input value={Math.round(this.state.zoom * 100)} onChange={this.zoomChanged.bind(this)} placeholder="set zoom..." style={style.zoom}/>
 				  <div>
 					  <button onClick={this.editMap.bind(this)} style={style.button}>Edit map</button>
 					  <button onClick={this.modePois.bind(this)} style={this.state.mode === "pois" ? style.buttonSelected : style.button}>Add PoIs</button>
 				  </div>
-				  <div ref="container" style={{height:"100%", position: "relative", overflow: "hidden"}}>
+				  <div ref="container" style={style.firstDiv}>
 					<img
 					src={this.state.url}
 					className="map"
