@@ -20,7 +20,7 @@ Meteor.methods({
         if(!Meteor.userId()){
             throw new Meteor.Error("not logged in");
         }
-        Maps.insert({
+        var objectToInsert = {
             owner: Meteor.userId(),
 			username: Meteor.user().username,
             shared: [],
@@ -29,7 +29,8 @@ Meteor.methods({
             desc: "",
             scale: 1,
             units: ""
-        })
+        };
+        return Maps.insert(objectToInsert);
     },
     "maps.remove"(id) {
         if(this.userId !== Maps.findOne(id).owner){

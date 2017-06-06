@@ -19,7 +19,13 @@ class MapSelect extends Component {
     }
 
     addMap(name, source) {
-        Meteor.call("maps.insert", name, source);
+        Meteor.call("maps.insert", name, source, (error, result) => {
+            this.setState({ selected: result });
+            this.props.MapSelected(result);
+            if (Maps.findOne(result).desc === undefined) {
+                Meteor.call("maps.updateDesc", result, "new description");
+            }
+        });
     }
 
     handleClick() {

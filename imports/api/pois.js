@@ -17,7 +17,7 @@ Meteor.methods({
         if(!Meteor.userId()){
             throw new Meteor.Error("not logged in");
         }
-        PoIs.insert({
+        return PoIs.insert({
             owner: Meteor.userId(),
 			username: Meteor.user().username,
             mapId: mapId,
@@ -28,7 +28,7 @@ Meteor.methods({
             privateDesc: [],
             image: "",
             imageSize: 16
-        })
+        });
     },
     "pois.remove"(id) {
         if(this.userId !== PoIs.findOne(id).owner){

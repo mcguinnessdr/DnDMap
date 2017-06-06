@@ -41,7 +41,9 @@ class MarkerMap extends Component {
 			return;
 		}
 		if(this.state.mode === "pois"){
-			Meteor.call("pois.insert", (e.clientX - this.state.mapLeft) / this.state.mapWidth, (e.clientY - (this.state.mapTop + this.state.containerTop)) / this.state.mapHeight, this.props.mapId);
+			Meteor.call("pois.insert", (e.clientX - this.state.mapLeft) / this.state.mapWidth, (e.clientY - (this.state.mapTop + this.state.containerTop)) / this.state.mapHeight, this.props.mapId, (error, result) => {
+				//alert(result);
+			});
 		}
 		// PoIs.insert({
 		// 	owner: Meteor.userId(),
