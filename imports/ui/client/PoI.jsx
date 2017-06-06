@@ -1,16 +1,17 @@
 import React, { Component, PropTypes } from 'react';
+import {createContainer} from 'meteor/react-meteor-data';
+
 import {PoIs} from "../../api/pois.js";
 import CityInfo from "./CityInfo.jsx";
 
-export default class PoI extends Component {
+class PoI extends Component {
 	constructor(props){
 		super(props);
-		this.poi = PoIs.findOne({ _id: this.props.ID })
 		this.state = {
 			infoVisible: false,
-			name: this.poi.name,
-			imageSrc: this.poi.image,
-			imageSize: this.poi.imageSize
+			name: props.poi.name,
+			imageSrc: props.poi.image,
+			imageSize: props.poi.imageSize
 		};
 	}
 
@@ -55,9 +56,9 @@ export default class PoI extends Component {
 		},
 			image: {
 				position: 'absolute',
-				top: this.props.posY - (this.props.zoom * this.poi.imageSize / 2) - (this.poi.imageSize * .125),
-				left: this.props.posX - (this.props.zoom * this.poi.imageSize / 2) - (this.poi.imageSize * .25),
-				width: this.props.zoom * this.poi.imageSize + "px",
+				top: this.props.posY - (this.props.zoom * this.props.poi.imageSize / 2) - (this.props.poi.imageSize * .125),
+				left: this.props.posX - (this.props.zoom * this.props.poi.imageSize / 2) - (this.props.poi.imageSize * .25),
+				width: this.props.zoom * this.props.poi.imageSize + "px",
 				border: "none",
 				borderWidth: "1px",
 				borderRadius: "100%",
@@ -68,8 +69,8 @@ export default class PoI extends Component {
 		return (
 			<div>
 				<div onClick={this.handleClick.bind(this)} onContextMenu={(e) => { e.preventDefault(); return false; }}>
-					{this.poi.image ? <img src={this.poi.image} style={style.image} draggable="false"/> :
-						<button style={style.button} >{this.poi.name}</button>}
+					{this.props.poi.image ? <img src={this.props.poi.image} style={style.image} draggable="false"/> :
+						<button style={style.button} >{this.props.poi.name}</button>}
 				</div>
 				{this.state.infoVisible ? <CityInfo ID={this.props.ID} onClose={this.hideInfo.bind(this)} onNameChanged={this.changeName.bind(this)} /> : null}
 			</div>
@@ -82,5 +83,15 @@ PoI.propTypes = {
 	posX: PropTypes.number.isRequired,
 	posY: PropTypes.number.isRequired,
 	ID: PropTypes.string.isRequired,
-	zoom: PropTypes.number
+	zoom: PropTypes.number,
+	poi: PropTypes.object.isRequired
 };
+
+
+export default createContainer(({ID}) => {
+	Meteor.subscribe("pois");
+
+	return {
+		poi: PoIs.findOne(ID)
+	};
+}, PoI);
