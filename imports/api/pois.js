@@ -25,7 +25,9 @@ Meteor.methods({
 			posY: posY,
 			name: "new city",
 			desc: "new description",
-            privateDesc: []
+            privateDesc: [],
+            image: "",
+            imageSize: 16
         })
     },
     "pois.remove"(id) {
@@ -39,6 +41,12 @@ Meteor.methods({
     },
     "pois.updateDesc"(id, newDesc) {
         PoIs.update(id, {$set:{desc: newDesc}});
+    },
+    "pois.updateImage"(id, newImage) {
+        PoIs.update(id, {$set:{image: newImage}});
+    },
+    "pois.updateImageSize"(id, newSize) {
+        PoIs.update(id, {$set:{imageSize: newSize}});
     },
     "pois.updatePrivateDesc"(id, newDesc) {
         if(PoIs.findOne({"_id": id, "privateDesc.id": this.userId})) {

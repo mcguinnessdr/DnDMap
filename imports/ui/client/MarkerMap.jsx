@@ -55,7 +55,7 @@ class MarkerMap extends Component {
 
 	renderPoIs() {
 		return this.props.pois.map((poi) => (
-			poi.mapId === this.props.mapId ? <PoI posX={poi.posX  * this.state.mapWidth + this.state.mapLeft} posY={poi.posY  * this.state.mapHeight + this.state.mapTop} ID={poi._id}/> : null
+			poi.mapId === this.props.mapId ? <PoI posX={poi.posX  * this.state.mapWidth + this.state.mapLeft} posY={poi.posY  * this.state.mapHeight + this.state.mapTop} ID={poi._id} zoom={this.state.zoom}/> : null
 			));
 	}
 

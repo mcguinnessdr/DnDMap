@@ -12,7 +12,9 @@ export default class CityInfo extends Component {
         this.state = {
             name: city.name,
             desc: city.desc,
-            privateDesc: ""
+            privateDesc: "",
+            image: city.image ? city.image : "",
+            imageSize: city.imageSize ? city.imageSize : ""
         }
     }
 
@@ -45,6 +47,26 @@ export default class CityInfo extends Component {
 
     privateDescChanged(e) {
         this.setState({privateDesc: e.target.value});
+    }
+
+    finishedChangingImage(contents) {
+        this.setState({image: contents});
+        Meteor.call("pois.updateImage", this.props.ID, contents);
+        // PoIs.update({_id: this.props.ID}, {$set:{desc: this.state.desc}});
+    }
+
+    imageChanged(e) {
+        this.setState({image: e.target.value});
+    }
+
+    finishedChangingImageSize(contents) {
+        this.setState({imageSize: contents});
+        Meteor.call("pois.updateImageSize", this.props.ID, contents);
+        // PoIs.update({_id: this.props.ID}, {$set:{desc: this.state.desc}});
+    }
+
+    imageSizeChanged(e) {
+        this.setState({imageSize: e.target.value});
     }
 
     removePoI() {
@@ -97,6 +119,8 @@ export default class CityInfo extends Component {
                 <EditableHeader onFinishedEditing={this.finishedChangingName.bind(this)} contents={this.state.name} placeholder="Enter place name..."/>
                 {/*{this.state.editingName ? <input onChange={this.nameChanged.bind(this)} onBlur={this.finishedChangingName.bind(this)} value={this.state.name} ref="editName" onLoad={() => {alert(this);this.refs.editName.select()}}/> : <h1 onClick={() => {this.setState({editingName: true})}}>{this.state.name}</h1>}*/}
                 <button style={style.close} onClick={() => {this.props.onClose();}}>x</button>
+                <EditableHeader onFinishedEditing={this.finishedChangingImage.bind(this)} contents={this.state.image} style={{fontWeight:"normal", fontSize:"16px"}} placeholder="Enter image Url..."/>
+                <EditableHeader onFinishedEditing={this.finishedChangingImageSize.bind(this)} contents={this.state.imageSize} style={{fontWeight:"normal", fontSize:"16px"}} placeholder="Enter image size..."/>                
                 <EditableDescription onFinishedEditing={this.finishedChangingDescription.bind(this)} contents={this.state.desc} placeholder="Enter place description..." />
                 {/*<EditableDescription onFinishedEditing={this.finishedChangingPrivateDescription.bind(this)} contents={this.state.privateDesc} placeholder="Enter private description..." />*/}
                 {/*{this.state.editingDesc ? <textarea style={{width:"100%", height: "80%"}} onChange={this.descChanged.bind(this)} onBlur={this.finishedChangingDescription.bind(this)} value={this.state.desc} /> : <div onClick={() => {this.setState({editingDesc: true});}}><ReactMarkdown  source={this.state.desc}/></div>}*/}

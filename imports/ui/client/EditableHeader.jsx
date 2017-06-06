@@ -22,8 +22,8 @@ export default class EditableH1 extends Component {
 
     render() {
         style = {
-            fontWeight: "bold",
-            fontSize: "30px"
+            fontWeight: this.props.style ? this.props.style.fontWeight ? this.props.style.fontWeight : "bold" : "bold",
+            fontSize: this.props.style ? this.props.style.fontSize ? this.props.style.fontSize : "30px" : "30px"
         }
 
         return this.state.editing ? <input style={style} onChange={this.contentsChanged.bind(this)} onBlur={this.finishedEditing.bind(this)} value={this.state.contents} ref="edit" /> : <p style={style} onClick={() => { this.setState({ editing: true }) }}>{this.state.contents !== "" ? this.state.contents : this.props.placeholder}</p>;
@@ -40,5 +40,6 @@ export default class EditableH1 extends Component {
 EditableH1.propTypes = {
     contents: PropTypes.string.isRequired,
     onFinishedEditing: PropTypes.func.isRequired,
-    placeholder: PropTypes.string
+    placeholder: PropTypes.string,
+    style: PropTypes.object
 }
