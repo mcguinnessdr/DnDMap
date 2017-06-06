@@ -5,6 +5,7 @@ import MarkerMap from "../imports/ui/client/MarkerMap.jsx";
 import Controls from "../imports/ui/client/Controls.jsx";
 import AccountsUIWrapper from "../imports/ui/client/AccountsUIWrapper.jsx";
 import MapSelect from "../imports/ui/client/MapSelect.jsx";
+import AppInfo from "../imports/ui/client/AppInfo.jsx";
 
 var mapImg = '../images/Map.png';
 
@@ -13,12 +14,17 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			mapId: ""
+			mapId: "",
+			infoVisible: false
 		}
 	}
 
 	onMapSelected(mapId){
 		this.setState({mapId: mapId});
+	}
+
+	showInfo() {
+		this.setState({infoVisible: !this.state.infoVisible});
 	}
 
  	render() {
@@ -36,7 +42,15 @@ class App extends Component {
 		  };
  		return (
 			<div style={style}>
-					<div style={{background: "white"}}><AccountsUIWrapper /></div>
+					<div style={{background: "white"}}>
+						<AccountsUIWrapper />
+				<button onClick={this.showInfo.bind(this)} style={{margin: "0em 1em", position: "relative",
+				  border: "none",
+				  borderRadius: ".5em",
+				  padding: ".125em .25em",
+				  whiteSpace: "nowrap",}}>Info</button>
+						{this.state.infoVisible === true? <AppInfo/> : null}
+					</div>
 					{
 						this.props.currentUser ?
 							(
