@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { FormControl } from "react-bootstrap";
 
 export default class EditableH1 extends Component {
     constructor(props){
@@ -26,13 +27,13 @@ export default class EditableH1 extends Component {
             fontSize: this.props.style ? this.props.style.fontSize ? this.props.style.fontSize : "30px" : "30px"
         }
 
-        return this.state.editing ? <input style={style} onChange={this.contentsChanged.bind(this)} onBlur={this.finishedEditing.bind(this)} value={this.state.contents} ref="edit" /> : <p style={style} onClick={() => { this.setState({ editing: true }) }}>{this.state.contents !== "" ? this.state.contents : this.props.placeholder}</p>;
+        return this.state.editing ? <FormControl style={style} onChange={this.contentsChanged.bind(this)} onBlur={this.finishedEditing.bind(this)} value={this.state.contents} inputRef={ref => {this.input = ref;}} /> : <p style={style} onClick={() => { this.setState({ editing: true }) }}>{this.state.contents !== "" ? this.state.contents : this.props.placeholder}</p>;
     }
 
     componentDidUpdate(prevState) {
         if(prevState.editing !== this.state.editing && this.state.editing == true)
         {
-            this.refs.edit.focus();
+            this.input.focus();
         }
     }
 }

@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import {createContainer} from 'meteor/react-meteor-data';
+import { FormControl } from "react-bootstrap";
+
 
 import {Maps} from "../../api/maps.js";
 import SharedUser from "./SharedUser.jsx";
@@ -63,7 +65,7 @@ class SharedWith extends Component {
 
         return (
             <div>
-                <input value={this.state.username} onKeyPress={this.finishedChangingUsername.bind(this)} onChange={this.usernameChanged.bind(this)} placeholder="Enter email to share"/>
+                <FormControl value={this.state.username} onKeyPress={this.finishedChangingUsername.bind(this)} onChange={this.usernameChanged.bind(this)} placeholder="Enter email to share"/>
                 {this.renderShared()}
             </div>
         );
