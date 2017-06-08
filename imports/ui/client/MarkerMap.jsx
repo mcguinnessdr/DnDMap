@@ -101,7 +101,7 @@ class MarkerMap extends Component {
 	}
 
 	handleScroll(e) {
-		if(this.zooming || true){
+		if(this.mouseOver){
 			var zoomNew = (this.state.zoom + (e.deltaY * this.state.zoom * -.001));
 			this.setState({zoom: zoomNew});
 			var scrolledTopNew = (e.deltaY * -.001) * (this.state.scrolledTop + this.state.containerTop - e.clientY) + this.state.scrolledTop;
