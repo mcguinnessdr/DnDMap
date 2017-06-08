@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import {Mongo} from 'meteor/mongo';
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Tab, Tabs } from "react-bootstrap";
 
 import {PoIs} from "../../api/pois.js";
 import EditableHeader from "./EditableHeader.jsx";
@@ -124,8 +124,17 @@ export default class CityInfo extends Component {
 					<Modal.Body>
                         {/*<EditableHeader onFinishedEditing={this.finishedChangingImage.bind(this)} contents={this.state.image} style={{fontWeight:"normal", fontSize:"16px"}} placeholder="Enter image Url..."/>*/}
                         {/*<EditableHeader onFinishedEditing={this.finishedChangingImageSize.bind(this)} contents={this.state.imageSize} style={{fontWeight:"normal", fontSize:"16px"}} placeholder="Enter image size..."/>                                        */}
-                        <EditableDescription onFinishedEditing={this.finishedChangingDescription.bind(this)} contents={this.state.desc} placeholder="Enter place description..." />						
-					</Modal.Body>
+                        <Tabs>
+                            <Tab eventKey={1} title="description">
+                                <EditableDescription onFinishedEditing={this.finishedChangingDescription.bind(this)} contents={this.state.desc} placeholder="Enter place description..." />						
+                            </Tab>
+                            <Tab eventKey={2} title="settings">
+                                <EditableHeader onFinishedEditing={this.finishedChangingImage.bind(this)} contents={this.state.image} style={{fontWeight:"normal", fontSize:"16px"}} placeholder="Enter image Url..."/>
+                                <span>Marker Size</span><EditableHeader onFinishedEditing={this.finishedChangingImageSize.bind(this)} contents={this.state.imageSize} style={{fontWeight:"normal", fontSize:"16px"}} placeholder="Enter image size..."/>                                                                        
+                                <Button bsStyle="danger" onClick={this.removePoI.bind(this)}>Delete</Button>
+                            </Tab>
+                        </Tabs>
+                    </Modal.Body>
 					<Modal.Footer>
 						<Button onClick={this.close.bind(this)} bsStyle="primary">Close</Button>
 					</Modal.Footer>
