@@ -56,7 +56,7 @@ class App extends Component {
 					<div style={{background: "white"}}>
 						<AccountsUIWrapper />
 				<button onClick={this.showInfo.bind(this)} style={style.button}>Info</button>
-						{this.state.infoVisible === true? <AppInfo/> : null}
+						<AppInfo show={this.state.infoVisible} close={this.showInfo.bind(this)}/>
 					</div>
 					{
 						this.props.currentUser ?

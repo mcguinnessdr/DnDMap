@@ -1,14 +1,23 @@
 import React, { Component, PropTypes } from 'react';
+import { Modal, Button } from "react-bootstrap";
 
 export default class AppInfo extends Component {
+
+    hide() {
+        this.props.close();
+    }
+
     render() {
         style={
             margin: "1em"
         }
 
         return (
-            <div style={style}>
-                <h1>Unnamed map annotating app</h1>
+            <Modal show={this.props.show} onHide={this.hide.bind(this)}>
+                <Modal.Header>
+                    <h1>Unnamed map annotating app</h1>
+                </Modal.Header>
+                <Modal.Body>
                 <p>Welcome to my little mapping app.  This app is intended to help with storing location based information for roleplaying games.
                     I started making this app because I was tired of having to sift through notes to find information on a specific town or dungeon I had encountered at an earlier time, either as a GM, or a player.
                 </p>
@@ -27,7 +36,13 @@ export default class AppInfo extends Component {
                 </p>
                 <h3>Other info</h3>
                 <p>If you find any <a href="https://github.com/mcguinnessdr/DnDMap/issues">issues</a>, or if you want to <a href="https://github.com/mcguinnessdr/DnDMap/pulls">contribute</a>, you can let me know through the <a href="https://github.com/mcguinnessdr/DnDMap">Github page</a></p>
-            </div>
+                </Modal.Body>
+            </Modal>
         )
     }
+}
+
+AppInfo.propTypes = {
+    close: PropTypes.func.isRequired,
+    show: PropTypes.bool.isRequired
 }
