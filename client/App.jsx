@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import {Meteor} from "meteor/meteor";
 import {createContainer} from 'meteor/react-meteor-data';
+import { Button } from "react-bootstrap";
+
 import MarkerMap from "../imports/ui/client/MarkerMap.jsx";
 import Controls from "../imports/ui/client/Controls.jsx";
 import AccountsUIWrapper from "../imports/ui/client/AccountsUIWrapper.jsx";
@@ -55,7 +57,7 @@ class App extends Component {
 			<div style={style.div}>
 					<div style={{background: "white"}}>
 						<AccountsUIWrapper />
-				<button onClick={this.showInfo.bind(this)} style={style.button}>Info</button>
+				<Button onClick={this.showInfo.bind(this)} bsSize="small">Info</Button>
 						<AppInfo show={this.state.infoVisible} close={this.showInfo.bind(this)}/>
 					</div>
 					{

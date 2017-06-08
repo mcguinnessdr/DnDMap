@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import {createContainer} from 'meteor/react-meteor-data';
+import { Button } from "react-bootstrap";
 import {PoIs} from "../../api/pois.js";
 import {Maps} from "../../api/maps.js";
 import PoI from "./PoI.jsx";
@@ -250,8 +251,8 @@ class MarkerMap extends Component {
 			  <div style={style.firstDiv}>
 				  <input value={Math.round(this.state.zoom * 100)} onChange={this.zoomChanged.bind(this)} placeholder="set zoom..." style={style.zoom}/>
 				  <div>
-					  <button onClick={this.editMap.bind(this)} style={style.button}>Edit map</button>
-					  <button onClick={this.modePois.bind(this)} style={this.state.mode === "pois" ? style.buttonSelected : style.button}>Add PoIs</button>
+					  <Button onClick={this.editMap.bind(this)} bsSize="small">Edit map</Button>
+					  <Button onClick={this.modePois.bind(this)} active={this.state.mode === "pois"} bsSize="small">Add PoIs</Button>
 				  </div>
 				  <div ref="container" style={style.firstDiv}>
 					<img
