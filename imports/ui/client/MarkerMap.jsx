@@ -255,7 +255,7 @@ class MarkerMap extends Component {
 				  </div>
 				  <div ref="container" style={style.firstDiv}>
 					<img
-					src={this.state.url}
+					src={this.props.map.url}
 					className="map"
 					alt="No maps or image URL is incorrect"
 					style={style.map}
@@ -270,7 +270,7 @@ class MarkerMap extends Component {
 				  <div>{this.renderPoIs()}</div>
 					<canvas style={style.canvas} ref="canvas" height={this.state.mapHeight} width={this.state.mapWidth} onContextMenu={this.handleContextMenu.bind(this)} onClick={this.preventDefault.bind(this)} />
 				  </div>
-				  {this.state.infoVisible ? <MapInfo ID={this.props.mapId} onClose={this.mapInfoClosed.bind(this)} urlUpdated={this.mapUrlUpdated.bind(this)} scaleUpdated={this.mapScaleUpdated.bind(this)}/> : null}
+				  <MapInfo ID={this.props.mapId} onClose={this.mapInfoClosed.bind(this)} urlUpdated={this.mapUrlUpdated.bind(this)} scaleUpdated={this.mapScaleUpdated.bind(this)} show={this.state.infoVisible}/>
 			  </div>
 		  );
 	}
@@ -346,11 +346,13 @@ MarkerMap.propTypes = {
 	currentUser: PropTypes.object,
 };
 
-export default createContainer(() => {
+export default createContainer(({mapId}) => {
 	Meteor.subscribe("pois");
-
+	Meteor.subscribe("maps");
+	
 	return {
 		pois: PoIs.find({}).fetch(),
 		currentUser: Meteor.user(),
+		map: Maps.findOne(mapId)
 	};
 }, MarkerMap);

@@ -62,8 +62,8 @@ class SharedWith extends Component {
 		};
 
         return (
-            <div style={style}>
-                <input style={style} value={this.state.username} onKeyPress={this.finishedChangingUsername.bind(this)} onChange={this.usernameChanged.bind(this)} placeholder="Enter email to share"/>
+            <div>
+                <input value={this.state.username} onKeyPress={this.finishedChangingUsername.bind(this)} onChange={this.usernameChanged.bind(this)} placeholder="Enter email to share"/>
                 {this.renderShared()}
             </div>
         );

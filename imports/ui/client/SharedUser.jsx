@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Button, ButtonGroup, Label } from "react-bootstrap";
 
 export default class SharedUser extends Component {
     handleClick(e) {
@@ -26,10 +27,15 @@ export default class SharedUser extends Component {
 			  }
             };
         return (
-            <div >
+            <div>
+            <ButtonGroup>
+                <Button disabled>{this.props.username}</Button><Button onClick={this.handleClick.bind(this)}>x</Button>              
+            </ButtonGroup>
+            </div>
+            /*<div >
                 <p style={style.div}><span>{this.props.username}</span><button style={style.button} onClick={this.handleClick.bind(this)}>x</button></p>
                 
-            </div>
+            </div>*/
         );
     }
 }

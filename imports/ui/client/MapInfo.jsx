@@ -1,28 +1,30 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
+import { Modal, Button, Tab, Tabs } from "react-bootstrap";
+import {createContainer} from 'meteor/react-meteor-data';
+
 import {Mongo} from 'meteor/mongo';
 import {Maps} from "../../api/maps.js";
 import EditableHeader from "./EditableHeader.jsx";
 import EditableDescription from "./EditableDescription.jsx";
 import SharedWith from "./SharedWith.jsx";
 
-export default class MapInfo extends Component {
+class MapInfo extends Component {
     constructor(props) {
         super(props);
-        var map = Maps.findOne({ _id: this.props.ID });
         this.state = {
-            name: map.name,
-            desc: map.desc,
-            URL: map.url,
+            name: "",
+            desc: "",
+            URL: "",
             editingName: false,
             editingDesc: false,
-            scale: map.scale,
+            scale: "",
             units: "",
-            shared: map.shared
+            shared: ""
         }
     }
 
-    blurred() {
+    close() {
         this.props.onClose();
     }
 
@@ -36,8 +38,8 @@ export default class MapInfo extends Component {
         Meteor.call("maps.updateDesc", this.props.ID, contents);
     }
     
-    finishedChangingUrl() {
-        Meteor.call("maps.updateURL", this.props.ID, this.state.URL);
+    finishedChangingUrl(contents) {
+        Meteor.call("maps.updateURL", this.props.ID, contents);
     }
 
     urlChanged (e) {
@@ -47,8 +49,8 @@ export default class MapInfo extends Component {
         }      
     }
 
-    finishedChangingScale() {
-        Meteor.call("maps.updateScale", this.props.ID, this.state.scale);
+    finishedChangingScale(contents) {
+        Meteor.call("maps.updateScale", this.props.ID, contents);
     }
 
     scaleChanged (e) {
@@ -123,8 +125,33 @@ export default class MapInfo extends Component {
                 clear: "right"
             }
         };
-        return (
-            <div ref="div" style={style.div}>
+        return (<div>
+                { this.props.map !== undefined ? <Modal show={this.props.show} onHide={this.close.bind(this)} bsSize="large">
+					<Modal.Header>
+                        <EditableHeader onFinishedEditing={this.finishedChangingName.bind(this)} contents={this.props.map.name} placeholder="Enter map name..."/>
+					</Modal.Header>
+					<Modal.Body>
+                        <Tabs animation={false}>
+                            <Tab eventKey={1} title="description">
+                                <EditableDescription onFinishedEditing={this.finishedChangingDescription.bind(this)} contents={this.props.map.desc} placeholder="Enter place description..." />						
+                            </Tab>
+                            <Tab eventKey={2} title="settings">                                
+                                <label style={{display: "block"}}>Marker Image</label>
+                                <EditableHeader onFinishedEditing={this.finishedChangingUrl.bind(this)} contents={this.props.map.url} style={{fontWeight:"normal", fontSize:"16px"}} placeholder="Enter image Url..."/>
+                                <label style={{display: "block"}}>Marker Size</label>
+                                <EditableHeader onFinishedEditing={this.finishedChangingScale.bind(this)} contents={this.props.map.scale} style={{fontWeight:"normal", fontSize:"16px"}} placeholder="Enter scale..."/>                                                                        
+                                <div><Button bsStyle="danger" onClick={this.removeMap.bind(this)}>Delete</Button></div>
+                            </Tab>
+                            <Tab eventKey={3} title="sharing">
+                                <SharedWith ID={this.props.ID}/>                                
+                            </Tab>
+                        </Tabs>
+                    </Modal.Body>
+					<Modal.Footer>
+						<Button onClick={this.close.bind(this)} bsStyle="primary">Close</Button>
+					</Modal.Footer>
+				</Modal> : null}</div>
+            /*<div ref="div" style={style.div}>
                 <p>map info</p>
                 <EditableHeader onFinishedEditing={this.finishedChangingName.bind(this)} contents={this.state.name} placeholder="Enter map name..." />
                 <button style={style.close} onClick={() => {this.props.onClose();}}>X</button>
@@ -133,17 +160,26 @@ export default class MapInfo extends Component {
                 <SharedWith ID={this.props.ID}/>
                 <EditableDescription onFinishedEditing={this.finishedChangingDescription.bind(this)} contents={this.state.desc} placeholder="Enter map description..." />
                 <button onClick={this.removeMap.bind(this)} style={style.delete}>DELETE</button>
-            </div>
+            </div>*/
         );
     }
 
     componentDidMount() {
-        ReactDOM.findDOMNode(this.refs.div).focus();
+        //ReactDOM.findDOMNode(this.refs.div).focus();
     }
 }
 
 MapInfo.propTypes = { 
     ID: PropTypes.string.isRequired,
     onClose: PropTypes.func.isRequired,
-    urlUpdated: PropTypes.func
+    urlUpdated: PropTypes.func,
+    show: PropTypes.bool.isRequired
 };
+
+export default createContainer(({ID}) => {
+	Meteor.subscribe("maps");
+
+	return {
+		map: Maps.findOne(ID)
+	};
+}, MapInfo);

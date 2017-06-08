@@ -63,7 +63,7 @@ class App extends Component {
 							(
 								<div ref="map" style={style.map}>
 									<MapSelect MapSelected={this.onMapSelected.bind(this)} />
-									<MarkerMap mapId={this.state.mapId}/>
+									{this.state.mapId !== "" ? <MarkerMap mapId={this.state.mapId}/> : null}
 									{/*<img src={mapImg} className="map" alt="map" style={style} onClick={this.handleClick.bind(this)} ref="map" />
 									{this.renderPoIs()}*/}
 								</div>
