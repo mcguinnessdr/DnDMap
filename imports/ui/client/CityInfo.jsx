@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import {Mongo} from 'meteor/mongo';
+import { Modal, Button } from "react-bootstrap";
+
 import {PoIs} from "../../api/pois.js";
 import EditableHeader from "./EditableHeader.jsx";
 import EditableDescription from "./EditableDescription.jsx";
@@ -18,7 +20,7 @@ export default class CityInfo extends Component {
         }
     }
 
-    blurred() {
+    close() {
         this.props.onClose();
     }
 
@@ -115,27 +117,39 @@ export default class CityInfo extends Component {
             }
         };
         return (
-            <div ref="div" style={style.div}>
+                <Modal show={this.props.show} onHide={this.close.bind(this)} bsSize="large">
+					<Modal.Header>
+                        <EditableHeader onFinishedEditing={this.finishedChangingName.bind(this)} contents={this.state.name} placeholder="Enter place name..."/>
+					</Modal.Header>
+					<Modal.Body>
+                        {/*<EditableHeader onFinishedEditing={this.finishedChangingImage.bind(this)} contents={this.state.image} style={{fontWeight:"normal", fontSize:"16px"}} placeholder="Enter image Url..."/>*/}
+                        {/*<EditableHeader onFinishedEditing={this.finishedChangingImageSize.bind(this)} contents={this.state.imageSize} style={{fontWeight:"normal", fontSize:"16px"}} placeholder="Enter image size..."/>                                        */}
+                        <EditableDescription onFinishedEditing={this.finishedChangingDescription.bind(this)} contents={this.state.desc} placeholder="Enter place description..." />						
+					</Modal.Body>
+					<Modal.Footer>
+						<Button onClick={this.close.bind(this)} bsStyle="primary">Close</Button>
+					</Modal.Footer>
+				</Modal>
+
+            /*<div ref="div" style={style.div}>
                 <EditableHeader onFinishedEditing={this.finishedChangingName.bind(this)} contents={this.state.name} placeholder="Enter place name..."/>
-                {/*{this.state.editingName ? <input onChange={this.nameChanged.bind(this)} onBlur={this.finishedChangingName.bind(this)} value={this.state.name} ref="editName" onLoad={() => {alert(this);this.refs.editName.select()}}/> : <h1 onClick={() => {this.setState({editingName: true})}}>{this.state.name}</h1>}*/}
                 <button style={style.close} onClick={() => {this.props.onClose();}}>x</button>
                 <EditableHeader onFinishedEditing={this.finishedChangingImage.bind(this)} contents={this.state.image} style={{fontWeight:"normal", fontSize:"16px"}} placeholder="Enter image Url..."/>
                 <EditableHeader onFinishedEditing={this.finishedChangingImageSize.bind(this)} contents={this.state.imageSize} style={{fontWeight:"normal", fontSize:"16px"}} placeholder="Enter image size..."/>                
                 <EditableDescription onFinishedEditing={this.finishedChangingDescription.bind(this)} contents={this.state.desc} placeholder="Enter place description..." />
-                {/*<EditableDescription onFinishedEditing={this.finishedChangingPrivateDescription.bind(this)} contents={this.state.privateDesc} placeholder="Enter private description..." />*/}
-                {/*{this.state.editingDesc ? <textarea style={{width:"100%", height: "80%"}} onChange={this.descChanged.bind(this)} onBlur={this.finishedChangingDescription.bind(this)} value={this.state.desc} /> : <div onClick={() => {this.setState({editingDesc: true});}}><ReactMarkdown  source={this.state.desc}/></div>}*/}
                 <button onClick={this.removePoI.bind(this)} style={style.delete}>DELETE</button>
-            </div>
+            </div>*/
         );
     }
 
     componentDidMount() {
-        ReactDOM.findDOMNode(this.refs.div).focus();
+        //ReactDOM.findDOMNode(this.refs.div).focus();
     }
 }
 
 CityInfo.propTypes = { 
     ID: PropTypes.string.isRequired,
     onClose: PropTypes.func.isRequired,
-    onNameChanged: PropTypes.func
+    onNameChanged: PropTypes.func,
+    show: PropTypes.bool.isRequired
 };
