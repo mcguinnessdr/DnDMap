@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import { Modal, Button, Tab, Tabs } from "react-bootstrap";
+import { Modal, Button, Tab, Tabs, Badge } from "react-bootstrap";
 import {createContainer} from 'meteor/react-meteor-data';
 
 import {Mongo} from 'meteor/mongo';
@@ -20,7 +20,7 @@ class MapInfo extends Component {
             editingDesc: false,
             scale: "",
             units: "",
-            shared: ""
+            shared: []
         }
     }
 
@@ -136,13 +136,13 @@ class MapInfo extends Component {
                                 <EditableDescription onFinishedEditing={this.finishedChangingDescription.bind(this)} contents={this.props.map.desc} placeholder="Enter place description..." />						
                             </Tab>
                             <Tab eventKey={2} title="settings">                                
-                                <label style={{display: "block"}}>Marker Image</label>
+                                <label style={{display: "block"}}>Map Url</label>
                                 <EditableHeader onFinishedEditing={this.finishedChangingUrl.bind(this)} contents={this.props.map.url} style={{fontWeight:"normal", fontSize:"16px"}} placeholder="Enter image Url..."/>
-                                <label style={{display: "block"}}>Marker Size</label>
+                                <label style={{display: "block"}}>Scale (px/unit)</label>
                                 <EditableHeader onFinishedEditing={this.finishedChangingScale.bind(this)} contents={this.props.map.scale} style={{fontWeight:"normal", fontSize:"16px"}} placeholder="Enter scale..."/>                                                                        
                                 <div><Button bsStyle="danger" onClick={this.removeMap.bind(this)}>Delete</Button></div>
                             </Tab>
-                            <Tab eventKey={3} title="sharing">
+                            <Tab eventKey={3} title={<div><span>sharing </span><Badge>{this.props.map.shared.length}</Badge></div>}>
                                 <SharedWith ID={this.props.ID}/>                                
                             </Tab>
                         </Tabs>

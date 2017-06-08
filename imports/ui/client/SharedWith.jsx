@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import {createContainer} from 'meteor/react-meteor-data';
-import { FormControl } from "react-bootstrap";
+import { FormControl, Button, Form } from "react-bootstrap";
 
 
 import {Maps} from "../../api/maps.js";
@@ -34,9 +34,18 @@ class SharedWith extends Component {
 
     finishedChangingUsername(e) {
         if(e.key === "Enter"){
-            this.setState({username: ""});              
-            Meteor.call("maps.addShared", this.props.ID, this.state.username);
+            this.setState({username: ""});     
+            this.addShared();         
         }
+    }
+
+    addShared() {
+        Meteor.call("maps.addShared", this.props.ID, this.state.username);
+    }
+
+    onSubmit(){
+        this.setState({ username: "" });
+        this.addShared();      
     }
 
     usernameChanged (e) {
@@ -65,7 +74,10 @@ class SharedWith extends Component {
 
         return (
             <div>
+                <Form inline>
                 <FormControl value={this.state.username} onKeyPress={this.finishedChangingUsername.bind(this)} onChange={this.usernameChanged.bind(this)} placeholder="Enter email to share"/>
+                <Button onClick={this.onSubmit.bind(this)}>Add</Button>
+                </Form>
                 {this.renderShared()}
             </div>
         );
