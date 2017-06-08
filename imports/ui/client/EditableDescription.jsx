@@ -28,7 +28,14 @@ export default class EditableDescription extends Component {
     }
 
     render() {
-        return this.state.editing ? <textarea style={{display: "block", width:"80%", height: "70%", fontSize: "16px"}} onChange={this.contentsChanged.bind(this)} onBlur={this.finishedEditing.bind(this)} value={this.state.contents} ref="edit" /> : <div onClick={this.divClicked.bind(this)}><ReactMarkdown source={this.state.contents !== "" ? this.state.contents : this.props.placeholder}/></div>;
+        var style = {
+            markdownDiv: {
+                overflowY: "auto",
+                height: "70%"
+            }
+        }
+
+        return this.state.editing ? <textarea style={{display: "block", width:"80%", height: "70%", fontSize: "16px"}} onChange={this.contentsChanged.bind(this)} onBlur={this.finishedEditing.bind(this)} value={this.state.contents} ref="edit" /> : <div onClick={this.divClicked.bind(this)} style={style.markdownDiv}><ReactMarkdown source={this.state.contents !== "" ? this.state.contents : this.props.placeholder}/></div>;
     }
 
     componentDidUpdate(prevState) {
