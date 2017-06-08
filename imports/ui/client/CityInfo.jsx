@@ -124,14 +124,16 @@ export default class CityInfo extends Component {
 					<Modal.Body>
                         {/*<EditableHeader onFinishedEditing={this.finishedChangingImage.bind(this)} contents={this.state.image} style={{fontWeight:"normal", fontSize:"16px"}} placeholder="Enter image Url..."/>*/}
                         {/*<EditableHeader onFinishedEditing={this.finishedChangingImageSize.bind(this)} contents={this.state.imageSize} style={{fontWeight:"normal", fontSize:"16px"}} placeholder="Enter image size..."/>                                        */}
-                        <Tabs>
+                        <Tabs animation={false}>
                             <Tab eventKey={1} title="description">
                                 <EditableDescription onFinishedEditing={this.finishedChangingDescription.bind(this)} contents={this.state.desc} placeholder="Enter place description..." />						
                             </Tab>
-                            <Tab eventKey={2} title="settings">
+                            <Tab eventKey={2} title="settings">                                
+                                <label style={{display: "block"}}>Marker Image</label>
                                 <EditableHeader onFinishedEditing={this.finishedChangingImage.bind(this)} contents={this.state.image} style={{fontWeight:"normal", fontSize:"16px"}} placeholder="Enter image Url..."/>
-                                <span>Marker Size</span><EditableHeader onFinishedEditing={this.finishedChangingImageSize.bind(this)} contents={this.state.imageSize} style={{fontWeight:"normal", fontSize:"16px"}} placeholder="Enter image size..."/>                                                                        
-                                <Button bsStyle="danger" onClick={this.removePoI.bind(this)}>Delete</Button>
+                                <label style={{display: "block"}}>Marker Size</label>
+                                <EditableHeader onFinishedEditing={this.finishedChangingImageSize.bind(this)} contents={this.state.imageSize} style={{fontWeight:"normal", fontSize:"16px"}} placeholder="Enter image size..."/>                                                                        
+                                <div><Button bsStyle="danger" onClick={this.removePoI.bind(this)}>Delete</Button></div>
                             </Tab>
                         </Tabs>
                     </Modal.Body>
