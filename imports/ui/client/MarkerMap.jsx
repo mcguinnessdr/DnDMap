@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import {createContainer} from 'meteor/react-meteor-data';
-import { Button } from "react-bootstrap";
+import { Button, FormControl, Form } from "react-bootstrap";
 import {PoIs} from "../../api/pois.js";
 import {Maps} from "../../api/maps.js";
 import PoI from "./PoI.jsx";
@@ -249,11 +249,11 @@ class MarkerMap extends Component {
 		  };
 		  return (
 			  <div style={style.firstDiv}>
-				  <input value={Math.round(this.state.zoom * 100)} onChange={this.zoomChanged.bind(this)} placeholder="set zoom..." style={style.zoom}/>
-				  <div>
+				  <Form inline>
 					  <Button onClick={this.editMap.bind(this)} bsSize="small">Edit map</Button>
 					  <Button onClick={this.modePois.bind(this)} active={this.state.mode === "pois"} bsSize="small">Add PoIs</Button>
-				  </div>
+					<FormControl value={Math.round(this.state.zoom * 100)} onChange={this.zoomChanged.bind(this)} placeholder="set zoom..." bsSize="small"/>					  
+				  </Form>
 				  <div ref="container" style={style.firstDiv}>
 					<img
 					src={this.props.map.url}
