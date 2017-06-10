@@ -24,7 +24,8 @@ export default class EditableH1 extends Component {
     render() {
         style = {
             fontWeight: this.props.style ? this.props.style.fontWeight ? this.props.style.fontWeight : "bold" : "bold",
-            fontSize: this.props.style ? this.props.style.fontSize ? this.props.style.fontSize : "30px" : "30px"
+            fontSize: this.props.style ? this.props.style.fontSize ? this.props.style.fontSize : "30px" : "30px",
+            margin: "5px"
         }
 
         return this.state.editing ? <FormControl style={style} onChange={this.contentsChanged.bind(this)} onBlur={this.finishedEditing.bind(this)} value={this.state.contents} inputRef={ref => {this.input = ref;}} /> : <p style={style} onClick={() => { this.setState({ editing: true }) }}>{this.state.contents !== "" ? this.state.contents : this.props.placeholder}</p>;

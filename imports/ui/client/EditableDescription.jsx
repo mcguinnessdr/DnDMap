@@ -31,11 +31,12 @@ export default class EditableDescription extends Component {
         var style = {
             markdownDiv: {
                 overflowY: "auto",
-                height: "70%"
+                height: "70%",
+                margin: "10px"
             }
         }
 
-        return this.state.editing ? <FormControl componentClass="textarea" rows="25" style={{display: "block", width:"100%", maxWidth:"100%", height: "70%", fontSize: "16px"}} onChange={this.contentsChanged.bind(this)} onBlur={this.finishedEditing.bind(this)} value={this.state.contents} inputRef={ref => {this.input = ref;}} /> : <div onClick={this.divClicked.bind(this)} style={style.markdownDiv}><ReactMarkdown source={this.state.contents !== "" ? this.state.contents : this.props.placeholder}/></div>;
+        return this.state.editing ? <FormControl componentClass="textarea" rows="25" style={{display: "block", width:"100%", maxWidth:"100%", height: "70%", fontSize: "16px", margin: "10px"}} onChange={this.contentsChanged.bind(this)} onBlur={this.finishedEditing.bind(this)} value={this.state.contents} inputRef={ref => {this.input = ref;}} /> : <div onClick={this.divClicked.bind(this)} style={style.markdownDiv}><ReactMarkdown source={this.state.contents !== "" ? this.state.contents : this.props.placeholder}/></div>;
     }
 
     componentDidUpdate(prevState) {
