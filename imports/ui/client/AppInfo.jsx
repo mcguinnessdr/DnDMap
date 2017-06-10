@@ -36,6 +36,9 @@ export default class AppInfo extends Component {
                 <p>You can also set custom markers for points of interest, rather than just displaying the location name.  To do this, just paste an image URL in the appropriate spot in the PoI's settings.</p>
                 <h3>Other info</h3>
                 <p>If you find any <a href="https://github.com/mcguinnessdr/DnDMap/issues">issues</a>, or if you want to <a href="https://github.com/mcguinnessdr/DnDMap/pulls">contribute</a>, you can let me know through the <a href="https://github.com/mcguinnessdr/DnDMap">Github page</a></p>
+                <h4>Credits</h4>
+                <p>Icons made by <a href="http://www.freepik.com/">Freepik</a> from <a href="http://www.flaticon.com/">www.flaticon.com</a></p>
+                <p>Icons made by <a href="http://www.flaticon.com/authors/becris">Becris</a> from <a href="http://www.flaticon.com/">www.flaticon.com</a></p>
                 </Modal.Body>
             </Modal>
         )

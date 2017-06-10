@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import {createContainer} from 'meteor/react-meteor-data';
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 
 import {PoIs} from "../../api/pois.js";
 import CityInfo from "./CityInfo.jsx";
@@ -60,14 +60,17 @@ class PoI extends Component {
 				top: this.props.posY - (this.props.zoom * this.props.poi.imageSize / 2),
 				left: this.props.posX - (this.props.zoom * this.props.poi.imageSize / 2),
 				width: this.props.zoom * this.props.poi.imageSize + "px",
-				border: "none",
-				borderRadius: "100%"
+				// border: "none",
+				// borderRadius: "100%"
 			}
 		};
+
+		var toolTip = <Tooltip bsSize="large">{this.props.poi.name}</Tooltip>
+
 		return (
 			<div>
 				<div onClick={this.handleClick.bind(this)} onContextMenu={(e) => { e.preventDefault(); return false; }}>
-					{this.props.poi.image ? <img src={this.props.poi.image} style={style.image} draggable="false"/> :
+					{this.props.poi.image ? <OverlayTrigger placement="top" overlay={toolTip}><img src={this.props.poi.image} style={style.image} draggable="false"/></OverlayTrigger> :
 						<button style={style.button} >{this.props.poi.name}</button>}
 				</div>
 				<CityInfo ID={this.props.ID} onClose={this.hideInfo.bind(this)} onNameChanged={this.changeName.bind(this)} show={this.state.infoVisible} />

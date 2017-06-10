@@ -8,6 +8,13 @@ export default class PoIIcons extends Component {
 
         }
         this.icons = [
+            "https://image.flaticon.com/icons/svg/89/89009.svg",
+            "https://image.flaticon.com/icons/svg/90/90397.svg",
+            "https://image.flaticon.com/icons/svg/90/90410.svg",
+            "https://image.flaticon.com/icons/svg/161/161823.svg",
+            "https://image.flaticon.com/icons/svg/63/63584.svg",
+            "https://image.flaticon.com/icons/svg/66/66339.svg",
+            "https://image.flaticon.com/icons/svg/427/427572.svg"
         ]
     }
 
@@ -16,7 +23,7 @@ export default class PoIIcons extends Component {
     }
 
     renderIcons() {
-        return this.icons.map((url) => (<img src={url} style={{width:"32px", borderRadius:"100%", margin:"2px"}} onClick={this.handleClick.bind(this)}/>));
+        return this.icons.map((url) => (<img src={url} style={{width:"32px", margin:"2px"}} onClick={this.handleClick.bind(this)}/>));
     }
 
     render() {
