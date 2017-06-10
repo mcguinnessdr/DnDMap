@@ -12,10 +12,11 @@ export default class CityInfo extends Component {
     constructor(props) {
         super(props);
         var city = PoIs.findOne({ _id: this.props.ID });
+        var privateDesc = city.privateDesc.find((privateDesc) => {return privateDesc.id === Meteor.userId()})
         this.state = {
             name: city.name,
             desc: city.desc,
-            privateDesc: "",
+            privateDesc: privateDesc ? privateDesc.desc : "",
             image: city.image ? city.image : "",
             imageSize: city.imageSize ? city.imageSize : ""
         }
@@ -123,11 +124,12 @@ export default class CityInfo extends Component {
                         <EditableHeader onFinishedEditing={this.finishedChangingName.bind(this)} contents={this.state.name} placeholder="Enter place name..."/>
 					</Modal.Header>
 					<Modal.Body>
-                        {/*<EditableHeader onFinishedEditing={this.finishedChangingImage.bind(this)} contents={this.state.image} style={{fontWeight:"normal", fontSize:"16px"}} placeholder="Enter image Url..."/>*/}
-                        {/*<EditableHeader onFinishedEditing={this.finishedChangingImageSize.bind(this)} contents={this.state.imageSize} style={{fontWeight:"normal", fontSize:"16px"}} placeholder="Enter image size..."/>                                        */}
                         <Tabs animation={false}>
                             <Tab eventKey={1} title="description">
+                                <h4>Description</h4>
                                 <EditableDescription onFinishedEditing={this.finishedChangingDescription.bind(this)} contents={this.state.desc} placeholder="Enter place description..." />						
+                                <h4>Private notes</h4>
+                                <EditableDescription onFinishedEditing={this.finishedChangingPrivateDescription.bind(this)} contents={this.state.privateDesc} placeholder="Enter place description..." />						
                             </Tab>
                             <Tab eventKey={2} title="settings">                                
                                 <label style={{display: "block"}}>Marker Image</label>
