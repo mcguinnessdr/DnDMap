@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Button, Alert } from "react-bootstrap";
 
-export default class EditableH1 extends Component {
+export default class DeleteButton extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -37,7 +37,7 @@ export default class EditableH1 extends Component {
     }
 }
 
-EditableH1.propTypes = {
+DeleteButton.propTypes = {
     onDelete: PropTypes.func.isRequired,
     alert: PropTypes.string
 }

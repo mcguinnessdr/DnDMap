@@ -6,6 +6,7 @@ import { Modal, Button, Tab, Tabs } from "react-bootstrap";
 import {PoIs} from "../../api/pois.js";
 import EditableHeader from "./EditableHeader.jsx";
 import EditableDescription from "./EditableDescription.jsx";
+import DeleteButton from "./DeleteButton.jsx";
 
 export default class CityInfo extends Component {
     constructor(props) {
@@ -133,7 +134,7 @@ export default class CityInfo extends Component {
                                 <EditableHeader onFinishedEditing={this.finishedChangingImage.bind(this)} contents={this.state.image} style={{fontWeight:"normal", fontSize:"16px"}} placeholder="Enter image Url..."/>
                                 <label style={{display: "block"}}>Marker Size</label>
                                 <EditableHeader onFinishedEditing={this.finishedChangingImageSize.bind(this)} contents={this.state.imageSize} style={{fontWeight:"normal", fontSize:"16px"}} placeholder="Enter image size..."/>                                                                        
-                                <div><Button bsStyle="danger" onClick={this.removePoI.bind(this)}>Delete</Button></div>
+                                <div><DeleteButton onDelete={this.removePoI.bind(this)}>Delete</DeleteButton></div>
                             </Tab>
                         </Tabs>
                     </Modal.Body>
