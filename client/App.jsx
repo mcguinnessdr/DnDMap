@@ -54,25 +54,28 @@ class App extends Component {
 			  }
 		  };
  		return (
-			<div style={style.div}>
-					<div style={{background: "white"}}>
+				<div style={style.div}>
+					<div style={{ background: "white" }}>
 						<AccountsUIWrapper />
-				<Button onClick={this.showInfo.bind(this)} bsSize="small">Help</Button>
-						<AppInfo show={this.state.infoVisible} close={this.showInfo.bind(this)}/>
+						<Button onClick={this.showInfo.bind(this)} bsSize="small">Help</Button>
+						<AppInfo show={this.state.infoVisible} close={this.showInfo.bind(this)} />
 					</div>
 					{
 						this.props.currentUser ?
 							(
 								<div ref="map" style={style.map}>
 									<MapSelect MapSelected={this.onMapSelected.bind(this)} />
-									{this.state.mapId !== "" ? <MarkerMap mapId={this.state.mapId}/> : null}
+									{this.state.mapId !== "" ? <MarkerMap mapId={this.state.mapId} /> : null}
 									{/*<img src={mapImg} className="map" alt="map" style={style} onClick={this.handleClick.bind(this)} ref="map" />
 									{this.renderPoIs()}*/}
 								</div>
 							)
-							: ""
+							: <div style={{textAlign:"center", top:"200px", position:"relative"}}>
+								<p>Welcome to Map Marker, an app for storing location based information for roleplaying games.</p>
+								<p>To get started hit the sign in button and create an account</p>
+							</div>
 					}
-			</div>
+				</div>
 		);
  	}
 }
