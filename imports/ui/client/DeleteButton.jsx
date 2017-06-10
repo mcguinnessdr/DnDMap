@@ -27,8 +27,8 @@ export default class DeleteButton extends Component {
             <div>
                 <Button onClick={this.handleShowClick.bind(this)} bsStyle="danger">Delete</Button>
                 {this.state.showWarning ? <Alert bsStyle="danger">
-                    <h3>Are you sure you want to delete this map forever?</h3>
-                    <p>This will also delete the map for anyone you have shared it with, so be careful</p>
+                    <h3>{this.props.title ? this.props.title : "Are you sure you want to delete this forever?"}</h3>
+                    <p>{this.props.title ? this.props.title : "This will also delete it for anyone you have shared it with, so be careful"}</p>
                     <Button onClick={this.handleConfirmClick.bind(this)} bsStyle="danger">Delete</Button>
                     <Button onClick={this.handleShowClick.bind(this)}>Cancel</Button>
                 </Alert> : null}
@@ -39,5 +39,6 @@ export default class DeleteButton extends Component {
 
 DeleteButton.propTypes = {
     onDelete: PropTypes.func.isRequired,
-    alert: PropTypes.string
+    title: PropTypes.string,
+    content: PropTypes.string
 }
