@@ -61,9 +61,7 @@ class PoI extends Component {
 				left: this.props.posX - (this.props.zoom * this.props.poi.imageSize / 2),
 				width: this.props.zoom * this.props.poi.imageSize + "px",
 				border: "none",
-				borderWidth: "1px",
-				borderRadius: "100%",
-				padding: ".125em .25em"
+				borderRadius: "100%"
 			}
 		};
 		return (
