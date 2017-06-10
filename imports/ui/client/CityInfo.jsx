@@ -7,6 +7,7 @@ import {PoIs} from "../../api/pois.js";
 import EditableHeader from "./EditableHeader.jsx";
 import EditableDescription from "./EditableDescription.jsx";
 import DeleteButton from "./DeleteButton.jsx";
+import PoIIcons from "./PoIIcons.jsx";
 
 export default class CityInfo extends Component {
     constructor(props) {
@@ -134,6 +135,7 @@ export default class CityInfo extends Component {
                             <Tab eventKey={2} title="settings">                                
                                 <label style={{display: "block"}}>Marker Image</label>
                                 <EditableHeader onFinishedEditing={this.finishedChangingImage.bind(this)} contents={this.state.image} style={{fontWeight:"normal", fontSize:"16px"}} placeholder="Enter image Url..."/>
+                                <PoIIcons onClick={this.finishedChangingImage.bind(this)} />
                                 <label style={{display: "block"}}>Marker Size</label>
                                 <EditableHeader onFinishedEditing={this.finishedChangingImageSize.bind(this)} contents={this.state.imageSize} style={{fontWeight:"normal", fontSize:"16px"}} placeholder="Enter image size..."/>                                                                        
                                 <div><DeleteButton onDelete={this.removePoI.bind(this)}>Delete</DeleteButton></div>
