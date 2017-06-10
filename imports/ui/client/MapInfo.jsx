@@ -8,6 +8,7 @@ import {Maps} from "../../api/maps.js";
 import EditableHeader from "./EditableHeader.jsx";
 import EditableDescription from "./EditableDescription.jsx";
 import SharedWith from "./SharedWith.jsx";
+import DeleteButton from "./DeleteButton.jsx";
 
 class MapInfo extends Component {
     constructor(props) {
@@ -140,7 +141,7 @@ class MapInfo extends Component {
                                 <EditableHeader onFinishedEditing={this.finishedChangingUrl.bind(this)} contents={this.props.map.url} style={{fontWeight:"normal", fontSize:"16px"}} placeholder="Enter image Url..."/>
                                 <label style={{display: "block"}}>Scale (px/unit)</label>
                                 <EditableHeader onFinishedEditing={this.finishedChangingScale.bind(this)} contents={this.props.map.scale} style={{fontWeight:"normal", fontSize:"16px"}} placeholder="Enter scale..."/>                                                                        
-                                <div><Button bsStyle="danger" onClick={this.removeMap.bind(this)}>Delete</Button></div>
+                                <div><DeleteButton onDelete={this.removeMap.bind(this)}>Delete</DeleteButton></div>
                             </Tab>
                             <Tab eventKey={3} title={<div><span>sharing </span><Badge>{this.props.map.shared.length}</Badge></div>}>
                                 <SharedWith ID={this.props.ID}/>                                
