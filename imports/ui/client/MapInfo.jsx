@@ -77,7 +77,11 @@ class MapInfo extends Component {
     }
 
     removeMap() {
-        Meteor.call("maps.remove", this.props.ID);
+        Meteor.call("maps.remove", this.props.ID, (error, result) => {
+            if(result !== false) {
+ 
+            }
+        });
         this.props.onClose();
     }
 

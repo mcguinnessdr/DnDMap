@@ -1,5 +1,6 @@
 import {Mongo} from 'meteor/mongo';
 import {Meteor} from "meteor/meteor";
+import {PoIs} from "./pois.js";
 
 export const Maps = new Mongo.Collection("maps");
 
@@ -34,9 +35,10 @@ Meteor.methods({
     },
     "maps.remove"(id) {
         if(this.userId !== Maps.findOne(id).owner){
-            return;
+            return false;
         }
-        Maps.remove(id);
+        PoIs.remove({mapId: id});
+        return Maps.remove(id);
     },
     "maps.updateName"(id, newName) {
         Maps.update(id, {$set:{name: newName}});

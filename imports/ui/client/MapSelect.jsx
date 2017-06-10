@@ -75,7 +75,7 @@ class MapSelect extends Component {
 	}
 
     componentWillReceiveProps (nextProps) {
-        if(this.props.maps[0] === undefined){
+        if(this.props.maps[0] === undefined || nextProps.maps.find((map) => {return map._id === this.state.selected}) === undefined){
             this.setState({selected: nextProps.maps[0]._id});
             this.props.MapSelected(nextProps.maps[0]._id);
             if (Maps.findOne(nextProps.maps[0]._id).desc === undefined) {
