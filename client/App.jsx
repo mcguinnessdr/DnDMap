@@ -57,7 +57,7 @@ class App extends Component {
 			<div style={style.div}>
 					<div style={{background: "white"}}>
 						<AccountsUIWrapper />
-				<Button onClick={this.showInfo.bind(this)} bsSize="small">Info</Button>
+				<Button onClick={this.showInfo.bind(this)} bsSize="small">Help</Button>
 						<AppInfo show={this.state.infoVisible} close={this.showInfo.bind(this)}/>
 					</div>
 					{
