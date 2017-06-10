@@ -13,7 +13,11 @@ export default class CityInfo extends Component {
     constructor(props) {
         super(props);
         var city = PoIs.findOne({ _id: this.props.ID });
-        var privateDesc = city.privateDesc.find((privateDesc) => {return privateDesc.id === Meteor.userId()})
+        if(city.privateDesc) {
+            var privateDesc = city.privateDesc.find((privateDesc) => {return privateDesc.id === Meteor.userId()})
+        }else {
+            var privateDesc = "";
+        }
         this.state = {
             name: city.name,
             desc: city.desc,
