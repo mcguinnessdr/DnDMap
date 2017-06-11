@@ -40,6 +40,20 @@ class PoI extends Component {
 		});
 	}
 
+	getBlurb(description, length) {
+		if(description === "")
+		{
+			return "";
+		}
+		var descArray = description.split(/[ ,]+/);
+		var blurb = "";
+		for (i = 0; i < descArray.lenght, i < length; i++) {
+			blurb += descArray[i] + " ";
+		}
+		blurb = blurb.substring(0, blurb.length-1) + "...";
+		return blurb;
+	}
+
 	render ()
 	{
 		var style = {
@@ -65,7 +79,7 @@ class PoI extends Component {
 			}
 		};
 
-		var toolTip = <Tooltip bsSize="large">{this.props.poi.name}</Tooltip>
+		var toolTip = <Tooltip><h3 style={{padding:1, margin:0}}>{this.props.poi.name}</h3><p style={{padding:0, margin:0}}>{this.getBlurb(this.props.poi.desc, 4)}</p></Tooltip>
 
 		return (
 			<div>
