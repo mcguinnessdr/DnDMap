@@ -47,7 +47,7 @@ class PoI extends Component {
 		}
 		var descArray = description.split(/[ ,]+/);
 		var blurb = "";
-		for (i = 0; i < descArray.lenght, i < length; i++) {
+		for (i = 0; (i < descArray.length && i < length); i++) {
 			blurb += descArray[i] + " ";
 		}
 		blurb = blurb.substring(0, blurb.length-1) + "...";
