@@ -40,7 +40,7 @@ export default class Landing extends Component {
                       I started making this to keep track of information on cities in my Dungeons and Dragons campaign, as I was tired of having to sift through notes to find the details about wherever my players were.
                       Using this app you can save information about points of interest in your game map, then share it with your players so everyone stays up to date with the current story.
                       </p>
-                      <Button href="https://github.com/mcguinnessdr/DnDMap/wiki">More Info</Button>
+                      <Button href="https://github.com/mcguinnessdr/DnDMap/wiki" target="_blank">More Info</Button>
                       </div>
                       <div style={{margin:"10px"}}>
                         <AccountsUIWrapper />
