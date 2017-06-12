@@ -8,6 +8,10 @@ import CityInfo from "./CityInfo.jsx";
 class PoI extends Component {
 	constructor(props){
 		super(props);
+		this.leftClick = false;
+		this.dragging = false;
+		this.mouseOver = false;
+		this.rightClick = false;
 		this.state = {
 			infoVisible: false,
 			name: props.poi.name,
@@ -54,6 +58,52 @@ class PoI extends Component {
 		return blurb;
 	}
 
+	mouseMove(e) {
+		if(this.leftClick && this.mouseOver && this.props.canMove)
+		{
+			this.dragging = true;
+			//alert((this.props.posX + e.movementX) / this.props.mapWidth);
+		}
+		if(this.dragging) {
+			Meteor.call("pois.updatePosition", this.props.ID, e.movementX / this.props.mapWidth, e.movementY / this.props.mapHeight);
+
+		}
+	}
+
+	mouseDown(e) {
+		switch(e.which) {
+			case 1:
+				this.leftClick = true;
+				break;
+			case 3:
+				this.rightClick = true;
+				break;
+		}
+	}
+
+	mouseUp(e) {
+		switch(e.which) {
+			case 1:
+				this.leftClick = false;
+				if(!this.dragging && this.mouseOver) {
+					this.handleClick();
+				}
+				this.dragging = false;
+				break;
+			case 3:
+				this.rightClick = false;
+				break;
+		}
+	}
+
+	mouseOverMap() {
+		this.mouseOver = true;
+	}
+
+	mouseOutMap() {
+		this.mouseOver = false;
+	}
+
 	render ()
 	{
 		var style = {
@@ -83,7 +133,7 @@ class PoI extends Component {
 
 		return (
 			<div>
-				<div onClick={this.handleClick.bind(this)} onContextMenu={(e) => { e.preventDefault(); return false; }}>
+				<div onContextMenu={(e) => { e.preventDefault(); return false; }} onMouseOver={this.mouseOverMap.bind(this)} onMouseOut={this.mouseOutMap.bind(this)}>
 					{this.props.poi.image ? <OverlayTrigger placement="top" overlay={toolTip}><img src={this.props.poi.image} style={style.image} draggable="false"/></OverlayTrigger> :
 						<button style={style.button} >{this.props.poi.name}</button>}
 				</div>
@@ -91,6 +141,12 @@ class PoI extends Component {
 				{/*{this.state.infoVisible ? <CityInfo ID={this.props.ID} onClose={this.hideInfo.bind(this)} onNameChanged={this.changeName.bind(this)} /> : null}*/}
 			</div>
 		);
+	}
+
+	componentDidMount() {
+		window.addEventListener("mousemove", this.mouseMove.bind(this));
+		window.addEventListener("mousedown", this.mouseDown.bind(this));
+		window.addEventListener("mouseup", this.mouseUp.bind(this));
 	}
 }
 
@@ -100,7 +156,10 @@ PoI.propTypes = {
 	posY: PropTypes.number.isRequired,
 	ID: PropTypes.string.isRequired,
 	zoom: PropTypes.number,
-	poi: PropTypes.object.isRequired
+	poi: PropTypes.object.isRequired,
+	mapWidth: PropTypes.number.isRequired,
+	mapHeight: PropTypes.number.isRequired,
+	canMove: PropTypes.bool
 };
 
 

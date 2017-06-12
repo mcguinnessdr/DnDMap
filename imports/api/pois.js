@@ -55,5 +55,9 @@ Meteor.methods({
         {
             PoIs.update(id, { $addToSet: { privateDesc: {id: this.userId, desc: newDesc} }});
         }
+    },
+    "pois.updatePosition"(id, newX, newY) {
+        var poi = PoIs.findOne(id);
+        PoIs.update(id, {$set:{posX: poi.posX + newX, posY: poi.posY + newY}});        
     }
 });

@@ -58,7 +58,7 @@ class MarkerMap extends Component {
 
 	renderPoIs() {
 		return this.props.pois.map((poi) => (
-			poi.mapId === this.props.mapId ? <PoI posX={poi.posX  * this.state.mapWidth + this.state.mapLeft} posY={poi.posY  * this.state.mapHeight + this.state.mapTop} ID={poi._id} zoom={this.state.zoom}/> : null
+			poi.mapId === this.props.mapId ? <PoI posX={poi.posX  * this.state.mapWidth + this.state.mapLeft} posY={poi.posY  * this.state.mapHeight + this.state.mapTop} ID={poi._id} zoom={this.state.zoom} mapWidth={this.state.mapWidth} mapHeight={this.state.mapHeight} canMove={this.state.mode === "pois"}/> : null
 			));
 	}
 
@@ -131,7 +131,10 @@ class MarkerMap extends Component {
 	mouseDown(e) {
 		switch(e.which) {
 			case 1:
-				this.leftClick = true;
+				//this.leftClick = true;
+				if(this.mouseOver) {
+					this.leftClick = true;
+				}
 				break;
 			case 3:
 				this.rightClick = true;
@@ -251,7 +254,7 @@ class MarkerMap extends Component {
 			  <div style={style.firstDiv}>
 				  <Form inline>
 					  <Button onClick={this.editMap.bind(this)} bsSize="small">Edit map</Button>
-					  <Button onClick={this.modePois.bind(this)} active={this.state.mode === "pois"} bsSize="small">Add PoIs</Button>
+					  <Button onClick={this.modePois.bind(this)} active={this.state.mode === "pois"} bsSize="small">Edit PoIs</Button>
 					<FormControl value={Math.round(this.state.zoom * 100)} onChange={this.zoomChanged.bind(this)} placeholder="set zoom..." bsSize="small"/>					  
 				  </Form>
 				  <div ref="container" style={style.firstDiv}>
