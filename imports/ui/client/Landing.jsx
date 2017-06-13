@@ -45,6 +45,9 @@ export default class Landing extends Component {
                       <div style={{margin:"10px"}}>
                         <AccountsUIWrapper />
                     </div>
+                    <div>
+                      <p style={{fontSize:"14px", color:"#A3A3A3"}}><small>Version: Alpha 0.1</small></p>
+                    </div>
                     <div style={{margin:"20px"}}/>
                     
                     </div>
