@@ -32,7 +32,7 @@ export default class Landing extends Component {
 
         return (
             <div style={{ height: "100%", position: "relative", overflow: "scroll", alignText: "center", overflowX:"hidden" }}>
-                <div style={{ overflow: "auto", alignItems: "center", display: "flex", justifyContent: "center", backgroundImage: "url(../images/chrome_2017-06-12_13-27-42.jpg)", backgroundAttachment: "fixed", backgroundRepeat: "no-repeat", height: "100%", backgroundSize:"cover" }}>
+                <div style={{ overflow: "auto", alignItems: "center", display: "flex", justifyContent: "center", backgroundImage: "url(../images/cover.png)", backgroundAttachment: "fixed", backgroundRepeat: "no-repeat", height: "100%", backgroundSize:"cover" }}>
                     {/*<img src="../images/chrome_2017-06-12_12-32-43.jpg" style={{float: "left", width:"50%"}}/>*/}
                     <div style={{ backgroundColor: "#141414", alignItems: "center", display: "flex", justifyContent: "center", flexDirection:"column", width:"100%" }}>
                         <div style={{ margin: "50px 0px 10px 0px", color: "#F5F5F5", maxWidth: "800px", width: "80%", textAlign: "center" }} >
